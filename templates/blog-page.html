@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+  <h1 id="title">
+    {{ page.title }}
+  </h1>
+  {% if page.extra.subtitle %}
+    <h2 id="subtitle">{{ page.extra.subtitle }}</h2>
+  {% endif %}
+  <p id="date">{{ page.date }}</p>
+</header>
+
+{{ page.content | safe }}
+
+{% endblock content %}

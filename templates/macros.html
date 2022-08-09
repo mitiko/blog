@@ -1,0 +1,21 @@
+<!-- {% macro highlight_first_word(string) %}
+    {% set words = string | split(pat=" ") %}
+    {% set first_word = words | first %}
+    {% set remaining_words = words | slice(start=1) | join(sep=" ") %}
+    
+    <span class="first-word">
+        {{ first_word }}
+    </span>
+    {{ remaining_words }}
+{% endmacro highlight_first_word %} -->
+
+{% macro highlight_last_word(string) %}
+    {% set words = string | split(pat=" ") %}
+    {% set last_word = words | last %}
+    {% set remaining_words = words | slice(end=-1) | join(sep=" ") %}
+
+    {{ remaining_words }}
+    <span class="last-word">
+        {{ last_word }}
+    </span>
+{% endmacro highlight_last_word %}
