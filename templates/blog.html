@@ -8,15 +8,16 @@
   </h1>
 </header>
 
-
-<ul class="list-links">
-{% for page in section.pages %}
-  <li>
-    <a href="{{ page.path | safe }}">
-      {{ macros::highlight_last_word(string=page.title) }}
-    </a>
-  </li>
-{% endfor %}
-</ul>
+<nav>
+  <ul>
+  {% for page in section.pages %}
+    <li>
+      <a href="{{ page.path | safe }}">
+        {{ macros::highlight_last_word(string=page.title) }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>
 
 {% endblock content %}
