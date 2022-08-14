@@ -63,19 +63,20 @@ body {
 
 body::before, body::after {
     content: "";
-    width: 1.2rem; height: 1.2rem;
+    width: 1rem; height: 1rem;
     position: fixed;
+    margin: 0.3rem;
 }
 
 body::before {
-    top: 2px; left: 2px;
+    top: 0; left: 0;
     border-top: 3px solid var(--color-primary);
     border-left: 3px solid var(--color-primary);
     border-top-left-radius: 30%;
 }
 
 body::after {
-    bottom: 2px; right: 2px;
+    bottom: 0; right: 0;
     border-bottom: 3px solid var(--color-primary);
     border-right: 3px solid var(--color-primary);
     border-bottom-right-radius: 30%;
