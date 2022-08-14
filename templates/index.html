@@ -8,14 +8,16 @@
 </header>
 
 <h2>I have variable content on here:</h2>
-<ul class="list-links">
-  <li>
-    <!-- Blog <a href="{{ get_url(path="@/blog/_index.md") }}">section</a> -->
-    <a href="/blog">{{ macros::highlight_last_word(string="Blog section") }}</a>
-  </li>
-  <li>
-    <!-- Poems <a href="{{ get_url(path="@/poems/_index.md") }}">section</a> -->
-    <a href="/poems">{{ macros::highlight_last_word(string="Poems section") }}</a>
-  </li>
-</ul>
+<nav>
+  <ul>
+    <li>
+      <!-- Blog <a href="{{ get_url(path="@/blog/_index.md") }}">section</a> -->
+      <a href="/blog">{{ macros::highlight_last_word(string="Blog section") }}</a>
+    </li>
+    <li>
+      <!-- Poems <a href="{{ get_url(path="@/poems/_index.md") }}">section</a> -->
+      <a href="/poems">{{ macros::highlight_last_word(string="Poems section") }}</a>
+    </li>
+  </ul>
+</nav>
 {% endblock content %}
