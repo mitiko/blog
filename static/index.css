@@ -28,18 +28,16 @@ p + h2, blockquote + h2, ul + h2,
 p + h3, blockquote + h3, ul + h3,
 p + h4, blockquote + h4, ul + h4 { margin-block-start: 1.4rem; }
 
-header { margin-block: 2.4rem 3.2rem; font-size: 1.1em; }
+header { margin-block: 2.4rem 3.2rem; }
 header > p#date { font-size: 1.1em; font-weight: 580; color: var(--color-primary); }
 
 #sources + ul { margin-block-end: 0.4rem; color: var(--color-text-2); font-variation-settings: 'slnt' -2; }
 
+ul > li { margin-block-end: 0.75rem; }
 ul.list-links { font-size: 1.18em; font-weight: 430; }
-ul.list-links > li { margin-block-end: 0.75rem; }
-
 ul.list-links > li > a { color: var(--color-text-1); text-decoration: none; }
-ul.list-links > li > a > span.last-word { color: var(--color-primary); }
-/* ul.list-links > li > a > span.first-word { font-size: 1.1em; color: var(--color-primary); } */
 
+span.last-word, span.first-word, em { color: var(--color-primary); }
 *::marker { color: var(--color-primary); }
 
 blockquote {
@@ -53,11 +51,14 @@ blockquote {
     color: var(--color-text-2);
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
+
+body, html { margin: 0; padding: 0; }
+p { line-height: 1.6; }
+
+body {
     font-family: "Inter", "Roboto", sans-serif;
     font-feature-settings: "liga", "tnum", "case", "calt", "zero", "ss01", "locl";
+    font-size: 1.1em;
 }
 
 main {
