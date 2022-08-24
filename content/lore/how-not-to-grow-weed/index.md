@@ -1,7 +1,7 @@
 +++
 title = "How (not) to grow weed"
 date = 2022-04-19
-draft = false
+draft = true
 
 [extra]
 subtitle = "Or why it's hard to live by nihilism"
