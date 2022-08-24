@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+  <h1 id="title">
+    Taxonomy <span class="highlight">{{ term.name }}</span> in {{ taxonomy.name }}
+  </h1>
+  <hr>
+</header>
+
+<nav>
+  <ul>
+  {% for page in term.pages %}
+    <li>Page
+      <a href="{{ page.path | safe }}">
+        {{ macros::highlight_last_word(string=page.title) }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>
+
+{% endblock content %}

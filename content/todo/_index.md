@@ -1,5 +1,5 @@
 +++
 title = "TODO page"
 sort_by = "date"
-template = "todo.html"
+template = "sections/todo.html"
 +++
