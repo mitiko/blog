@@ -23,15 +23,17 @@
         {% endif %}
       </h2>
     {% endif %}
+    <p class="timeframe">[{{ page.extra.timeframe }}]</p> 
   </header>
+
   {{ page.content | safe }}
 
   {% if page.extra.link %}
-  <a class="content-link" href="{{ page.extra.link }}">
-    {% if page_type == "song-lyrics" %}
-    Listen <span class="last-word">here -></span>
-    {% endif %}
-  </a>
+    <a class="undecorated content-link" href="{{ page.extra.link }}">
+      {% if page_type == "song-lyrics" %}
+        Listen <span class="last-word">here -></span>
+      {% endif %}
+    </a>
   {% endif %}
 </article>
 {% endfor %}

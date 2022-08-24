@@ -39,7 +39,7 @@ header > p#date { font-size: 1.1em; font-weight: 580; color: var(--color-primary
 
 ul > li { margin-block-end: 0.75rem; }
 nav > ul { font-size: 1.15em; font-weight: 430; }
-nav > ul > li > a { color: var(--color-text-1); text-decoration: none; }
+nav > ul > li > a, a.undecorated { color: var(--color-text-1); text-decoration: none; }
 
 .highlight, span.last-word, span.first-word, em { color: var(--color-primary); }
 *::marker { color: var(--color-primary); }
@@ -61,7 +61,8 @@ article.favs-song-lyrics > :not(header, a.content-link) { font-variation-setting
 
 article > header > h2.artist { color: var(--color-primary); }
 article > header > h2.artist > span.featuring { font-size: 0.7em; color: var(--color-text-2); }
-article > a.content-link { color: var(--color-text-1); text-decoration: none; text-align: right; display: block; }
+article > a.content-link { text-align: right; display: block; }
+.timeframe { color: var(--color-text-2); font-size: 0.8em; font-weight: 420; }
 
 body, html { margin: 0; padding: 0; }
 p { line-height: 1.6; }
