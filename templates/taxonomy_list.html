@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+  <h1 id="title">
+    Taxonomies list for <span class="highlight">{{ taxonomy.name }}</span>
+  </h1>
+  <hr>
+</header>
+
+<nav>
+  <ul>
+  {% for term in terms %}
+    <li>
+      <a href="{{ term.path }}">
+        Term <span class="highlight">{{ term.name }}</span>
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>
+
+{% endblock content %}

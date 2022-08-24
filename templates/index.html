@@ -3,7 +3,7 @@
 {% block content %}
 <header>
   <h1 id="title" style="text-align: center;">
-    Mitiko's lore
+    Mitiko's blog
   </h1>
   <hr>
 </header>
@@ -12,12 +12,20 @@
 <nav>
   <ul>
     <li>
-      <!-- Blog <a href="{{ get_url(path="@/blog/_index.md") }}">section</a> -->
-      <a href="/blog">{{ macros::highlight_last_word(string="Blog section") }}</a>
+      <!-- Lore <a href="{{ get_url(path="@/lore/_index.md") }}">section</a> -->
+      <a href="/lore">{{ macros::highlight_last_word(string="Lore section") }}</a>
     </li>
     <li>
       <!-- Poems <a href="{{ get_url(path="@/poems/_index.md") }}">section</a> -->
       <a href="/poems">{{ macros::highlight_last_word(string="Poems section") }}</a>
+    </li>
+    <li>
+      <!-- Tech write-ups <a href="{{ get_url(path="@/poems/_index.md") }}">section</a> -->
+      <a href="/todo">{{ macros::highlight_last_word(string="Tech write-ups section") }}</a>
+    </li>
+    <li>
+      <!-- Favourites <a href="{{ get_url(path="@/poems/_index.md") }}">section</a> -->
+      <a href="/favs">{{ macros::highlight_last_word(string="Favourites section") }}</a>
     </li>
   </ul>
 </nav>
