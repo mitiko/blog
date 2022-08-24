@@ -1,7 +1,7 @@
 +++
 title = "The Ways"
 date = 2022-08-24
-draft = true
+draft = false
 
 [taxonomies]
 type = ["song-lyrics"]
