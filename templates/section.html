@@ -9,6 +9,9 @@
   <hr>
 </header>
 
+{% if section.pages | length == 0 %}
+<h2 class="error">Oops, this section has no articles, yet.</h2>
+{% else %}
 <nav>
   <ul>
   {% for page in section.pages %}
@@ -20,5 +23,6 @@
   {% endfor %}
   </ul>
 </nav>
+{% endif %}
 
 {% endblock content %}
