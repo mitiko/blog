@@ -1,7 +1,7 @@
 +++
 title = "Designing my blog"
 date = 2022-08-22
-draft = true
+draft = false
 
 # [extra]
 # subtitle = ""
