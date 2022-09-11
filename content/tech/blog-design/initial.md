@@ -1,5 +1,5 @@
 +++
-title = "Designing my blog"
+title = "Getting started"
 date = 2022-08-22
 draft = true
 
@@ -7,7 +7,7 @@ draft = true
 # subtitle = ""
 +++
 
-I've been wanting to start a blog for a while now, it's in every programmer's `TODO` toolbox.  
+I've been wanting to start a blog for a while now, it's in every programmer's `TODO` wishlist.  
 However, anxiety would often get to me, making me question what's the right platform to use,
 what'll give me enough **flexibility** whilst also providing **stability**, ease-of-use, and **carefree** deployments.
 
@@ -57,3 +57,18 @@ Whatever's not in there, I can usually find in the Tera docs - the templating en
 I was hesitant to upload anything at first, because.. none of it is ready.  
 But another important realization I had was that I'd never be quite happy with my blog -
 it would remain being a WIP for a long time, never finished - [like fashion](@/favs/the-social-network-fashion.md).
+
+<!-- TODO: Add an archive link to my first php script -->
+Choosing a hosting platform is another one of those choices that you have to do.
+In the past I've used [000webhost](https://www.000webhost.com/) just as I was starting to get into the webdev world
+(somehow being convinced that since facebook was written in php I must use the same - that's maybe 2014-2015).
+
+Since then, I've been a firm Github pages supporter as my code already gets version controlled and it's easy to get started.  
+I have, however, had some issues with GitHub's bias towards Jekyll, particularly, using math in markdown gets messy.
+
+
+What I've heard the cool kids use these days is Netlify. It's annoyingly simple to setup and I did it in no more than 5 minutes (+troubleshooting the zola version in the config).  
+Thus, on the 13th of August at exactly 12:30, through an automatic Netlify deploy, my blog became a reality!
+
+Netlify also has functions which might come in handy for some later more complicated applications.
+Although, to be fair, I like the no-js aesthetic and zola's static/compile-time functions are quite powerful.

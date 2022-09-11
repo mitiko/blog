@@ -9,9 +9,27 @@
   <hr>
 </header>
 
-{% if section.pages | length == 0 %}
+{% if section.pages | length == 0 and section.subsections | length == 0 %}
 <h2 class="error">Oops, this section has no articles, yet.</h2>
-{% else %}
+{% endif %}
+
+{% if section.subsections | length > 0 %}
+<h2 class="first-letter">Subsections:</h2>
+<nav id="subsections">
+  <ul>
+  {% for subsection_path in section.subsections %}
+  {% set subsection = get_section(path=subsection_path, metadata_only=true) %}
+    <li>
+      <a href="{{ subsection.path | safe }}">
+        {{ macros::highlight_last_word(string=subsection.title) }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>
+{% endif %}
+
+{% if section.pages | length > 0 %}
 <nav>
   <ul>
   {% for page in section.pages %}

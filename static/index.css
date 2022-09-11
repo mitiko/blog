@@ -11,9 +11,10 @@
     --color-text-1: rgb(30, 30, 30);
     --color-text-2: rgb(75, 75, 75);
     --color-prim: rgb(0, 144, 137);
-    --color-sec: rgb(255, 251, 131);
-    --color-ter: rgb(170, 51, 255);
-    --color-error: rgb(255, 97, 97);
+    /* --color-sec: rgb(255, 251, 131); */
+    --color-sec: hsl(41, 85%, 53%);
+    --color-ter: hsl(275, 100%, 60%);
+    --color-error: hsl(0, 100%, 69%);
 }
 
 h1 { margin-block: 0 1.0rem; font-size: 2.4em; font-weight: 620; }
@@ -45,6 +46,11 @@ strong { font-weight: 580 /* 666 */; }
 ul > li { margin-block-end: 0.75rem; }
 nav > ul { font-size: 1.15em; font-weight: 430; }
 nav > ul > li > a, a.undecorated { color: var(--color-text-1); text-decoration: none; }
+nav#subsections { border: 2px solid var(--color-sec); border-radius: 0.7rem; }
+nav#subsections > ul > li::marker { /* color: var(--color-sec); */ content: '\00BB\0020'; }
+
+/* TODO: See if I like this style */
+.first-letter::first-letter { color: var(--color-prim); }
 
 .highlight, span.last-word, span.first-word { color: var(--color-prim); }
 *::marker { color: var(--color-prim); }

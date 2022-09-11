@@ -10,6 +10,8 @@
 {% endmacro highlight_first_word %} -->
 
 {% macro highlight_last_word(string) %}
+<!-- TODO: Remove trailing spaces -->
+<!-- TODO: Deal with "\"" and ")" at end of string -->
     {% set words = string | split(pat=" ") %}
     {% set last_word = words | last %}
     {% set remaining_words = words | slice(end=-1) | join(sep=" ") %}
