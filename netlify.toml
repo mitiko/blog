@@ -20,4 +20,3 @@ command = "zola build --base-url $DEPLOY_PRIME_URL --drafts"
   to = "https://mitikox.com/tech/:splat"
   status = 200
   force = true
-  query = {path = ":path"}
