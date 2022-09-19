@@ -16,7 +16,7 @@ ZOLA_VERSION = "0.15.3"
 command = "zola build --base-url $DEPLOY_PRIME_URL --drafts"
 
 [[redirects]]
-  from = "https://tech.mitikox.com/*"
-  to = "https://mitikox.com/tech/:splat"
+  from = "https://tech.mitikox.top/*"
+  to = "https://mitikox.top/tech/:splat"
   status = 200
   force = true
