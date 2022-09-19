@@ -14,3 +14,10 @@ ZOLA_VERSION = "0.15.3"
 
 [context.deploy-preview]
 command = "zola build --base-url $DEPLOY_PRIME_URL --drafts"
+
+[[redirects]]
+  from = "https://tech.mitikox.com/*"
+  to = "https://mitikox.com/tech/:splat"
+  status = 200
+  force = true
+  query = {path = ":path"}
