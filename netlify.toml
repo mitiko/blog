@@ -15,6 +15,9 @@ ZOLA_VERSION = "0.15.3"
 [context.deploy-preview]
 command = "zola build --base-url $DEPLOY_PRIME_URL --drafts"
 
+[context.dev]
+command = "zola build --drafts"
+
 [[redirects]]
   from = "https://tech.mitikox.top/*"
   to = "https://mitikox.top/tech/:splat"

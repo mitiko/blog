@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Anybody:wght@900&display=swap');
+
+html::before {
+    content: "LOREMIPSUMDOLORSITAMETCONSECTETURADIPISCINGELITMAURISSEDODIOINTORTORDIGNISSIMCONDIMENTUMLOREMIPSUMDOLORSITAMETCONSECTETURADIPISCING";
+    overflow-wrap: anywhere;
+    font-family: 'Anybody', Helvetica, sans-serif;
+    font-size: 20em;
+    font-weight: 900;
+    z-index: -1;
+    position: fixed;
+    line-height: 0.8;
+    width: 200vw;
+    transform: translate(0, -1.5rem) rotate(-10deg);
+    /* background-color: hsl(350, 100%, 75%); */
+    background-color: hsl(349, 94%, 86%);
+    /* color: white; */
+}
+
+#text {
+    background-color: hsl(349, 94%, 86%);
+}

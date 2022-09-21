@@ -42,11 +42,11 @@ I did learn two things from that experience, though:
 Regardless of whether there was some negative reinforcement action at play or not, I switched to Zola - the rusty alternative ;)
 
 ```bash
-mkdir -p ~/Documents/Projects/Web/blog
-ln -s !$ ~/_blog && cd ~/_blog
+$ mkdir -p ~/Documents/Projects/Web/blog
+$ ln -s !$ ~/_blog && cd ~/_blog
 
-zola init
-code .
+$ zola init
+$ code .
 ```
 
 I like Zola much better. The doc is a bit all over the place because it's not really a doc but rather a guide.  
@@ -56,7 +56,7 @@ Whatever's not in there, I can usually find in the Tera docs - the templating en
 
 I was hesitant to upload anything at first, because.. none of it is ready.  
 But another important realization I had was that I'd never be quite happy with my blog -
-it would remain being a WIP for a long time, never finished - [like fashion](@/favs/the-social-network-fashion.md).
+it would remain being a WIP for a long time, never finished - [like fashion](@/favs/movies/the-social-network-fashion.md).
 
 <!-- TODO: Add an archive link to my first php script -->
 Choosing a hosting platform is another one of those choices that you have to do.

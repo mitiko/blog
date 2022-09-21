@@ -1,66 +1,7 @@
 {% extends "base.html" %}
 
-{% block content %}
-
-<header>
-  <h1 id="title">
-    {{ section.title }}
-  </h1>
-  <hr>
-</header>
-
-{% for page in section.pages %}
-{% set page_type = page.taxonomies.type | first %}
-<article class="favs-{{ page_type }}">
-  <header>
-    <h1>{{ page.title }}</h1>
-
-    {% if page.taxonomies.artist %}
-      <h2 class="artist">
-        {{ page.taxonomies.artist | first }}
-
-        {% if page.extra.featuring %}
-          <span class="featuring">ft {{ page.extra.featuring }}</span>
-        {% endif %}
-      </h2>
-    {% endif %}
-
-    {% if page.taxonomies.director %}
-      <h2 class="director">
-        {{ page.taxonomies.director | first }}
-        <span class="writer">writer {{ page.extra.writer }}</span>
-      </h2>
-    {% endif %}
-
-    <span class="timeframe">[{{ page.extra.timeframe }}]</span>
-
-  </header>
-
-  {{ page.content | safe }}
-
-  {% if page.taxonomies.director %}
-    <details>
-      <summary>Actors</summary>
-      {% for actor in page.extra.quote_by %}
-        <p>
-          <span class="acted-by">{{ page.extra.acted_by | nth(n=loop.index0) }}</span>
-          as
-          <span class="quote-by">{{ actor }}</span>
-        </p>
-      {% endfor %}
-    </details>
-  {% endif %}
-
-  {% if page.extra.link %}
-    <a class="undecorated content-link" href="{{ page.extra.link }}">
-      {% if page_type == "song-lyrics" %}
-        Listen <span class="last-word">here -></span>
-      {% endif %}
-    </a>
-  {% endif %}
-</article>
-{% endfor %}
-
-
-
-{% endblock content %}
+{#
+  {% block section_inline_css %}
+  {{ macros::inline_css(path="/favs.css") }}
+  {% endblock section_inline_css %}
+#}

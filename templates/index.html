@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
+{% block inline_css %}
+  {{ macros::inline_css(path="/index.css") }}
+{% endblock inline_css %}
+
+{% block title %}
+Home · 
+{% endblock title %}
+
 {% block content %}
 <header>
-  <h1 id="title" style="text-align: center;">
-    Mitiko's blog
-  </h1>
-  <hr>
+  <h1 id="title">mitiko</h1>
 </header>
 
 <h2>I have variable content on here:</h2>

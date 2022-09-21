@@ -18,8 +18,6 @@ link-type = "imdb"
 # todo add youtube link to scene, or netflix link
 +++
 
-EDUARDO and MARK fight about monetization
-
 <span class="character">EDUARDO</span>
 
 <p class="dialog">
