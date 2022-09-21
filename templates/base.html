@@ -4,9 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/index.css">
+    <!-- Inline Global CSS -->
+    {{ macros::inline_css(path="/style.css") }}
+    <!-- Inline Section CSS -->
+    {% block section_inline_css %} {% endblock %}
+    <!-- Inline Subsection CSS -->
+    {% block subsection_inline_css %} {% endblock %}
+    <!-- Inline Page CSS -->
+    {% block page_inline_css %} {% endblock %}
+    <!-- Inline Local CSS -->
+    {% block inline_css %} {% endblock %}
     <title>
-        Mitiko's lore{% if page.title %}::{{ page.title }}{% endif %}
+        {% block title %}
+            {% if section.title %}
+                {{ section.title }} · 
+            {% endif %}
+            {# TODO: Add infor about parent section #}
+            {% if page.title %}
+                {{ page.title }} · 
+            {% endif %}
+        {% endblock title %}
+        mitiko.x
     </title>
 </head>
 <body>

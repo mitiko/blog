@@ -1,0 +1,68 @@
+:root {
+    --t1: rgb(30, 30, 30);
+    --t2: rgb(75, 75, 75);
+    --c1: hsl(177, 100%, 28%);
+    --c2: hsl(283, 81%, 43%);
+    --f: sans-serif;
+}
+
+body, html { margin: 0; padding: 0; }
+body { font-family: var(--f); font-variant-numeric: slashed-zero tabular-nums; }
+main {
+    --p: 0.9rem;
+    padding-inline: var(--p);
+    width: min(70ch, 100% - 2 * var(--p));
+    margin-inline: auto;
+}
+footer { padding-block: 1rem; } /* TODO */
+
+header { margin-block: 1.2rem 3.2rem; }
+header > h1#title + h2#subtitle { color: var(--t2); }
+header > p#date { font-size: 1.1em; font-weight: 600; color: var(--c1); margin-block-start: -0.4rem; }
+
+h1 { margin-block: 0 1.0rem; font-size: 2.4em; font-weight: 600; }
+h2 { margin-block: 0 0.8rem; font-size: 1.8em; font-weight: 300; }
+h3 { margin-block: 0 0.6rem; font-size: 1.6em; font-weight: 500; }
+h4 { margin-block: 0 0.6rem; font-size: 1.3em; font-weight: 700; margin-inline-start: 0.5rem; }
+
+/* negative margin to make SUBtitles and use the same margin-block-end as the title */
+h1 + h2 { margin-block: -0.8rem 1.0rem; }
+h2 + h3 { margin-block: -0.6rem 0.8rem; }
+h3 + h4 { margin-block: -0.4rem 0.6rem; }
+
+p + h2, blockquote + h2, ul + h2,
+p + h3, blockquote + h3, ul + h3,
+p + h4, blockquote + h4, ul + h4 { margin-block-start: 1.4rem; }
+p { line-height: 1.4; color: var(--t1); }
+
+ul > li { margin-block-end: 0.75rem; }
+nav > ul { font-size: 1.2em; }
+nav > ul > li > a { color: var(--t1); text-decoration: none; }
+#sources + ul { margin-block-end: 0.4rem; color: var(--t2); font-style: italic; word-wrap: break-word; }
+
+nav#subsections { border: 2px solid var(--c2); border-radius: 6px; }
+nav#subsections > ul > li::marker { content: '\00BB\0020'; }
+
+blockquote {
+    color: var(--t2);
+    border-inline-start: 3px solid var(--c1); border-radius: 5px;
+    padding-inline: 0.6rem; margin-inline: 0.4rem;
+    font-style: italic; font-size: 0.95em;
+}
+
+details > :not(summary) { color: var(--t2); }
+details > summary::before { content: ''; margin-inline: 0.1rem; } /* hack for adding a margin */
+details { margin-block: 1rem; }
+
+img { display: block; max-width: 100%; margin: 2rem auto; border-radius: 6px; }
+img[src$=".svg"] { max-width: 20rem; border: none; }
+
+pre { padding: 0.8rem; overflow-x: auto; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; color: var(--t2) !important; }
+pre ::selection { background-color: var(--c2); }
+pre[data-linenos] tr > td:first-child { padding-right: 0.6rem; }
+
+strong { font-weight: 600; }
+span.last-word { color: var(--c1); }
+.error { color: hsl(0, 100%, 69%); }
+::marker { color: var(--c1); }
+::selection { background-color: var(--c1); color: #fff; }

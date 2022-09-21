@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block page_inline_css %}
+  {{ macros::inline_css(path="/movie.css") }}
+{% endblock page_inline_css %}
+
+{% block content %}
+<header>
+  <h1>{{ page.title }}</h1>
+
+  <h2 class="director">
+    {{ page.taxonomies.director | first }}
+    <span class="writer">writer {{ page.extra.writer }}</span>
+  </h2>
+
+  <p class="timeframe">[{{ page.extra.timeframe }}]</p>
+</header>
+
+{{ page.content | safe }}
+
+<details>
+  <summary>Actors</summary>
+  {% for actor in page.extra.quote_by %}
+  <p>
+    <span class="acted-by">{{ page.extra.acted_by | nth(n=loop.index0) }}</span>
+    as
+    <span class="quote-by">{{ actor }}</span>
+  </p>
+  {% endfor %}
+</details>
+
+// Youtube embed?
+{% if page.extra.link %}
+<a class="undecorated content-link" href="{{ page.extra.link }}">
+  Watch here ->
+</a>
+{% endif %}
+
+{% endblock content %}

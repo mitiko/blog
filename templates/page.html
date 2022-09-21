@@ -8,9 +8,10 @@
   {% if page.extra.subtitle %}
     <h2 id="subtitle">{{ page.extra.subtitle }}</h2>
   {% endif %}
-  <p id="date">{{ page.date }}</p>
+  <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
 </header>
 
 {{ page.content | safe }}
 
+<p>{{page.permalink}}</p>
 {% endblock content %}

@@ -21,3 +21,8 @@
         {{ last_word }}
     </span>
 {% endmacro highlight_last_word %}
+
+{% macro inline_css(path) %}
+    {% set css = load_data(path=path) %}
+    <style>{{ css | safe }}</style>
+{% endmacro inline_css %}
