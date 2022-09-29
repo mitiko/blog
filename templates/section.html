@@ -13,21 +13,34 @@
 <h2 class="error">Oops, this section has no articles, yet.</h2>
 {% endif %}
 
-{% if section.subsections | length > 0 %}
-<h2 class="first-letter">Subsections:</h2>
-<nav id="subsections">
-  <ul>
-  {% for subsection_path in section.subsections %}
-  {% set subsection = get_section(path=subsection_path, metadata_only=true) %}
-    <li>
-      <a href="{{ subsection.path | safe }}">
-        {{ macros::highlight_last_word(string=subsection.title) }}
-      </a>
-    </li>
-  {% endfor %}
-  </ul>
-</nav>
-{% endif %}
+{% for subsection_path in section.subsections %}
+{% set subsection = get_section(path=subsection_path, metadata_only=false) %}
+<fieldset>
+  <legend>
+    <h2>
+      {{ macros::highlight_last_word(string=subsection.title) }}
+    </h2>
+  </legend>
+
+  {% set sub_pages = subsection.pages %}
+  {% if subsection.extra.sort_rev %}
+    {% set sub_pages = sub_pages | reverse %}
+  {% endif %}
+  {# we have to slice after we (potentially) reverse the order #}
+  {% set sub_pages = sub_pages | slice(end=5) %}
+  <nav>
+    <ul>
+      {% for page in sub_pages %}
+      <li>
+        <a href="{{ page.path | safe }}">
+          {{ macros::highlight_last_word(string=page.title) }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</fieldset>
+{% endfor %}
 
 {% if section.pages | length > 0 %}
 <nav>
