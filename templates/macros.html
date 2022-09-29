@@ -1,24 +1,11 @@
-<!-- {% macro highlight_first_word(string) %}
-    {% set words = string | split(pat=" ") %}
-    {% set first_word = words | first %}
-    {% set remaining_words = words | slice(start=1) | join(sep=" ") %}
-    
-    <span class="first-word">
-        {{ first_word }}
-    </span>
-    {{ remaining_words }}
-{% endmacro highlight_first_word %} -->
-
 {% macro highlight_last_word(string) %}
-<!-- TODO: Remove trailing spaces -->
-<!-- TODO: Deal with "\"" and ")" at end of string -->
-    {% set words = string | split(pat=" ") %}
+    {% set words = string | trim | split(pat=" ") %}
     {% set last_word = words | last %}
     {% set remaining_words = words | slice(end=-1) | join(sep=" ") %}
 
     {{ remaining_words }}
     <span class="last-word">
-        {{ last_word }}
+        {% for l in last_word %}{% if l=='(' or l==')' or l=='"' or l=='.' %}<span class="undo">{{l}}</span>{% else %}{{l}}{% endif %}{% endfor %}
     </span>
 {% endmacro highlight_last_word %}
 
