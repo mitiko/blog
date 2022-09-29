@@ -1,14 +1,10 @@
-/* Movie (script) */
+/* Movie CSS */
 details { margin-inline-start: 0.8rem; }
-main { font-family:'Courier New', Courier, monospace; }
+main { font-family: 'Courier New', Courier, monospace; }
 header, details { font-family: var(--f); }
-
-header > h2 { color: var(--c1); }
-header > h2 > span { font-size: 0.7em; color: var(--t2); white-space: nowrap; }
 
 details > p > span.acted-by,
 details > p > span.quote-by { white-space: nowrap; }
 
-p.timeframe { color: var(--t2); font-size: 0.9em; font-weight: 600; margin-block-start: -0.4rem; }
 p.dialog { margin-inline: max(2rem, 100% - 60ch); }
 span.character { font-weight: 601; display: block; text-align: center; }
