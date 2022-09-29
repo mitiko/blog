@@ -40,9 +40,6 @@ nav > ul { font-size: 1.2em; }
 nav > ul > li > a { color: var(--t1); text-decoration: none; }
 #sources + ul { margin-block-end: 0.4rem; color: var(--t2); font-style: italic; word-wrap: break-word; }
 
-nav#subsections { border: 2px solid var(--c2); border-radius: 6px; }
-nav#subsections > ul > li::marker { content: '\00BB\0020'; }
-
 blockquote {
     color: var(--t2);
     border-inline-start: 3px solid var(--c1); border-radius: 5px;
@@ -53,6 +50,11 @@ blockquote {
 details > :not(summary) { color: var(--t2); }
 details > summary::before { content: ''; margin-inline: 0.1rem; } /* hack for adding a margin */
 details { margin-block: 1rem; }
+
+fieldset { border: 2px solid var(--c2); border-radius: 6px; }
+fieldset > legend { padding-inline: 0.3rem; font-size: 0.85em; }
+fieldset > legend > h2 { margin: 0; }
+fieldset > nav > ul > li::marker { content: '\00BB\0020'; }
 
 img { display: block; max-width: 100%; margin: 2rem auto; border-radius: 6px; }
 img[src$=".svg"] { max-width: 20rem; border: none; }
