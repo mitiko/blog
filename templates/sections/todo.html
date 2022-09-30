@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block section_inline_css %}
+  {{ macros::inline_css(path="/todo.css") }}
+{% endblock %}
+
 {% block content %}
 
 <header>
@@ -8,19 +12,13 @@
     </h1>
 </header>
 
-
 <p>
-    Send me an email at <code style="font-size: 1rem;">mitikodev@gmail.com</code>
+To support my work:<br>
+Send me an email at <code style="font-size: 1rem;">mitikodev@gmail.com</code>, or
 </p>
 
-<p >
-    Or
-</p>
-
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="DimitarRusev" data-color="#FF5F5F" data-emoji=""  data-font="Inter" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="DimitarRusev" data-color="#FF5F5F" data-emoji=""  data-font="Inter" data-text="You can buy me a coffee :)" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
 <noscript>
-    <a href="https://www.buymeacoffee.com/DimitarRusev">
-        https://www.buymeacoffee.com/DimitarRusev
-    </a>
+    You can buy me a <a href="https://www.buymeacoffee.com/DimitarRusev">coffee</a> :)
 </noscript>
 {% endblock content %}
