@@ -1,5 +1,4 @@
 +++
-title = "TODO page"
-sort_by = "date"
+title = "TODO"
 template = "sections/todo.html"
 +++
