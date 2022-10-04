@@ -44,9 +44,13 @@
 {% endfor %}
 
 {% if section.pages | length > 0 %}
+{% set pages = section.pages %}
+{% if section.extra.sort_rev %}
+  {% set pages = pages | reverse %}
+{% endif %}
 <nav>
   <ul>
-  {% for page in section.pages %}
+  {% for page in pages %}
     <li>
       <a href="{{ page.path | safe }}">
         {{ macros::highlight_last_word(string=page.title) }}
