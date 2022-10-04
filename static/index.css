@@ -22,5 +22,4 @@ nav > ul > li {
     padding: 0.5rem;
 }
 
-nav > ul > li > a { width: 100%; } /* so it's fully clickable */
 nav > ul > li > a > svg { margin-block: 0.4rem 0.7rem; }

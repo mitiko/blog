@@ -1,0 +1,20 @@
+base_url = "/"
+
+build_search_index = false # different
+
+minify_html = true
+generate_feed = true
+
+taxonomies = [
+    { name = "type", feed = true},
+    { name = "artist", feed = true},
+    { name = "director", feed = true},
+    { name = "release-year", feed = true},
+]
+
+[markdown]
+highlight_code = true
+highlight_theme = "ayu-light"
+
+[extra]
+favicon_url = "/local_favicon.png"
