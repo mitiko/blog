@@ -36,7 +36,7 @@ p + h4, blockquote + h4, ul + h4 { margin-block-start: 1.4rem; }
 p { line-height: 1.4; color: var(--t1); }
 
 ul > li { margin-block-end: 0.75rem; }
-nav > ul { font-size: 1.2em; }
+nav { font-size: 1.2em; }
 nav > ul > li > a { color: var(--t1); text-decoration: none; }
 #sources + ul { margin-block-end: 0.4rem; color: var(--t2); font-style: italic; word-wrap: break-word; }
 
@@ -51,14 +51,15 @@ details > :not(summary) { color: var(--t2); }
 details > summary::before { content: ''; margin-inline: 0.1rem; } /* hack for adding a margin */
 details { margin-block: 1rem; }
 
-fieldset { border: 2px solid var(--c2); border-radius: 6px; }
-fieldset + fieldset { margin-block-start: 2rem; }
+fieldset { border: 2px solid var(--c2); border-radius: 6px; margin-block: 2rem; }
+/* fieldset + fieldset { margin-block-start: 2rem; } */
 fieldset > legend { padding-inline: 0.3rem; font-size: 0.85em; }
 fieldset > legend > h2 { margin: 0; }
 fieldset > nav > ul > li::marker { content: '\00BB\0020'; }
 
 img { display: block; max-width: 100%; margin: 2rem auto; border-radius: 6px; }
 img[src$=".svg"] { max-width: 20rem; border: none; }
+svg { display: block; max-width: 100%; margin-inline: auto; }
 
 pre { padding: 0.8rem; overflow-x: auto; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; color: var(--t2) !important; }
 pre ::selection { background-color: var(--c2); }
