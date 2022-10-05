@@ -3,10 +3,14 @@
     {% set last_word = words | last %}
     {% set remaining_words = words | slice(end=-1) | join(sep=" ") %}
 
+    {% if words | length == 1 %}
+        {{ string }}
+    {% else %}
     {{ remaining_words }}
     <span class="last-word">
         {% for l in last_word %}{% if l=='(' or l==')' or l=='"' or l=='.' %}<span class="undo">{{l}}</span>{% else %}{{l}}{% endif %}{% endfor %}
     </span>
+    {% endif %}
 {% endmacro highlight_last_word %}
 
 {% macro inline_css(path) %}

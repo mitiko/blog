@@ -41,12 +41,8 @@ nav { font-size: 1.2em; }
 nav > ul > li > a { width: 100%; color: var(--t1); text-decoration: underline transparent; transition: text-decoration-color 0.5s; }
 nav > ul > li > a:hover { text-decoration-color: var(--c1); text-underline-offset: 0.2rem; }
 
-blockquote {
-    color: var(--t2);
-    border-inline-start: 3px solid var(--c1); border-radius: 5px;
-    padding-inline: 0.6rem; margin-inline: 0.4rem;
-    font-style: italic; font-size: 0.95em;
-}
+blockquote { border-inline-start: 3px solid var(--c1); border-radius: 5px; padding-inline: 0.6rem; margin-inline: 0.4rem; font-size: 1.2em; }
+blockquote > p { color: var(--t2); }
 
 details > :not(summary) { color: var(--t2); }
 details > summary::before { content: ''; margin-inline: 0.1rem; } /* hack for adding a margin */
@@ -65,6 +61,9 @@ svg { display: block; max-width: 100%; margin-inline: auto; }
 pre { padding: 0.8rem; overflow-x: auto; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; color: var(--t2) !important; }
 pre ::selection { background-color: var(--c2); }
 pre[data-linenos] tr > td:first-child { padding-right: 0.6rem; }
+p > code { white-space: nowrap; }
+
+table td, table th { border: 1px solid #000; padding: 0.4rem; }
 
 strong { font-weight: 600; }
 span.last-word { color: var(--c1); }
