@@ -18,9 +18,11 @@
             {% if section.title %}
                 {{ section.title }} · 
             {% endif %}
-            {# TODO: Add infor about parent section #}
             {% if page.title %}
                 {{ page.title }} · 
+                {% set parent_path = page.ancestors | last %}
+                {% set parent_section = get_section(path=parent_path, metadata_only=true) %}
+                {{ parent_section.title }} · 
             {% endif %}
         {% endblock title %}
         mitiko.x
