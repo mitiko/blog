@@ -46,6 +46,7 @@ blockquote > p { color: var(--t2); }
 
 details > :not(summary) { color: var(--t2); }
 details > summary::before { content: ''; margin-inline: 0.1rem; } /* hack for adding a margin */
+details > summary { cursor: pointer; }
 details { margin-block: 1rem; }
 
 fieldset { border: 2px solid var(--c2); border-radius: 6px; margin-block: 2rem; }

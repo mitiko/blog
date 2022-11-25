@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ config.extra.favicon_url }}">
     <!-- Inline Global CSS -->
-    {{ macros::inline_css(path="/style.css") }}
+    <!-- TODO: Maybe fetch the base as a seperate file so it gets cached? -->
+    {{ macros::inline_css(path="/styles/base.css") }}
     <!-- Inline Section CSS -->
     {% block section_inline_css %} {% endblock %}
+    <!-- Inline Subsection CSS -->
+    {% block subsection_inline_css %} {% endblock %}
     <!-- Inline Page CSS -->
     {% block page_inline_css %} {% endblock %}
     <!-- Inline Local CSS -->
