@@ -1,0 +1,27 @@
+Static models don't require per-symbol updates and they're much faster, but they're far from optimal in terms of
+<abbr title="Compression ratio">CR</abbr>.  
+Instead, static models are given on a per-block-basis.
+Most commonly, this is in the form of a [prediction table](https://en.wikipedia.org/wiki/Deflate#Stream_format)
+that gets encoded in the compressed file.  
+It is also possible to train an adaptive model on the previous block, and use it as a static one
+in the following block but this probably defeats the purpose of most use-cases.
+
+> If you need speed, go static!
+
+
+Another cool feature is you can train a hyper-good adaptive model on a certain file and then use it as a static one.
+This gives you high decompression speed with better ratios, but it's sensitive to how well you serialize the model.
+-> EXAMPLES!!
+
+A special case of the static model is the no-model:
+```rust
+// Bitwise case
+fn get_prob(&self) -> u16 {
+    // represents 1/2
+    1 << 15
+}
+```
+If the model has a [uniform distribution](https://en.wikipedia.org/wiki/Discrete_uniform_distribution), then it's equivalent
+to not doing any entropy coding at all.
+Examples of such coders are: TODO: Put examples here
+
