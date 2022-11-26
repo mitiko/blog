@@ -90,10 +90,41 @@ You can learn more about the weirdness of bitwise modeling from
 
 ## How does a model work?
 
+> "I believe every character in a text file is a result of a *very* high order probability distribution.  
+> Also pixels in images are results of a very high order probability distribution." - Gotty
+
+All models, much like the brain, make the assumption that future events will happen
+about as often as they have happened in the past (within a certain context of course).  
+The way to express this mathematically is through [Markov's property](https://en.wikipedia.org/wiki/Markov_property):
+
+$$
+P(X_n = x_n | X_{n-1} = x_{n-1}, ..., X_0 = x_0) = P(X_n = x_n | X_{n-1} = x_{n-1})
+$$
+
+The discrete case of the Markov property suggests the probability [distribution] of the next symbol
+depends only on the current state, not on past states. But although the math (in this form) suggests it,
+states do not have to be of the same type as symbols:
+
+$$
+P(S_n = s_n | X_{m-1} = x_{m-1}, ..., X_0 = x_0) = P(S_n = s_n | X_{m-1} = x_{m-1})
+$$
+
+This is no different than Markov's property for a stochastic process on the set of states \\(\mathcal{S}\\), with
+the only requirement that there exists a bijective mapping between states and symbols:
+
+$$
+\exists f, f^{-1}: f(s_{n-1}, ..., s_0) = (x_{m-1}, ..., x_0)
+$$
+
+
+
+Both static and adaptive models rely on one of the simplest assumptions in mathemathcis
+
 -> markov property
 -> decorrelation
 
-
+-> https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103
+-> https://encode.su/threads/3594-CM-design-discussion?p=69106&viewfull=1#post69106
 
 ---
 
@@ -101,43 +132,6 @@ You can learn more about the weirdness of bitwise modeling from
 -> adaptive vs static
 -> EXAMPLES! (python)
 -> 
-
-Mostly all compressors process data byte by byte in order, maybe with the exception of
-[BWT pre-processing](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform)
-or in image compression when 8x8 [DCTs](https://en.wikipedia.org/wiki/Discrete_cosine_transform)
-get [zig-zagged](https://en.wikipedia.org/wiki/JPEG#Entropy_coding).
-
-There're two (main) ways to make predictors:
-- some static obscure algorithm
-- adaptive models
-
-Initially when computers took off (and also had much less computational power),
-the default was to transmit the statistics for each symbol for each block.
-In fact, [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding) inherently uses a static
-probability table.
-
-It's clear there exist non-stationary data sources, the canonical example being a dictionary -
-in the beginning you can expect to see a lot of words start with `a` but as you move forward
-this distribution gets more and more skewed.
-
-So we turned to the best predictor we have, **THE BRAIN** (*evolutionary proven*&trade;).
-In fact, the brain is so complex that we're having a better chance at exploring how it works
-by building our own silicone based ones and comparing it with the real thang.
-
-<div id="anchor"></div>
-
-The reason the brain is so good at prediction is because it's very good at understanding context.
-You are capable of expecting (*predicting*) different outcomes (*symbol distributions*) in
-different situations (*contexts*).  
-The only problem is... there's waayyy to much data in the real world. Hence [sensory overload](https://en.wikipedia.org/wiki/Sensory_overload).
-Luckily the brain has figured out how to eliminate much of the noise (*aka lossy compression*).
-
-> The main assumption being made is future events will have similiar outcomes as past events.  
-> This is the basis of all physics, of life, and our universe - **determinism**.
-
-Adaptive predictors do something similiar - for a given context, they assume a probability distribution.
-With each new observation from a given context, they adapt the distribution (for that context) a little.
-Modern state-of-art neural nets have also adapted this standard and switch behavior based on context (see [transformers](https://en.wikipedia.org/wiki/Transformer_(machine_learning_model))).
 
 
 Enough chit-chat, let's look at some examples.  
