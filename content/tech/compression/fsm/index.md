@@ -116,6 +116,12 @@ $$
 \exists f, f^{-1}: f(s_{n-1}, ..., s_0) = (x_{m-1}, ..., x_0)
 $$
 
+Notice how a single state may be anything from a single bit to hundreds of gigabytes data.  
+-> How does decorrelation fit into this?
+
+We can't ever truly know the probability distribution of a symbol (from a datasource we didn't ourselves generate)
+but we can get extremely close approximations with Markov's property.
+
 
 
 Both static and adaptive models rely on one of the simplest assumptions in mathemathcis
@@ -123,8 +129,10 @@ Both static and adaptive models rely on one of the simplest assumptions in mathe
 -> markov property
 -> decorrelation
 
--> https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103
+-> https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103  
 -> https://encode.su/threads/3594-CM-design-discussion?p=69106&viewfull=1#post69106
+
+# TODO
 
 ---
 
