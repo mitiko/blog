@@ -1,16 +1,21 @@
 +++
 title = "On FSMs"
+# the world of FSMs in data compression
+# !! compressing data with way too many FSMs
+# # this isn't as much abt FSMs as it is about contexts and histories..
+# History is (almost always) bound to repeat itself
 date = 2022-11-15
 draft = true
 
 [extra]
 katex = true
 style = "styles/tech/fsm.css"
-# todo: place css in assets
 +++
 
 We've [established](@/tech/compression/introduction.md) that the problem of compression mostly
 boils down to good prediction. The better the prediction, the better the compression ratio.
+
+<!-- TLDR -->
 
 All compressors (that I know of) process symbols one by one - whether that would be
 bits, bytes, [UTF-8](https://en.wikipedia.org/wiki/UTF-8) codepoints, words (parsed by a dictionary), pixels, etc.  
@@ -94,45 +99,70 @@ You can learn more about the weirdness of bitwise modeling from
 > Also pixels in images are results of a very high order probability distribution." - Gotty
 
 All models, much like the brain, make the assumption that future events will happen
-about as often as they have happened in the past (within a certain context of course).  
-The way to express this mathematically is through [Markov's property](https://en.wikipedia.org/wiki/Markov_property):
+about as often as they have happened in the past (within a certain context of course).
+
+This is called [predictive modeling](https://en.wikipedia.org/wiki/Predictive_modelling).  
+The wiki page lists a couple fo limitations to this methodology:
+1. History cannot always accurately predict the future.
+2. Unknown unknowns are an issue.
+3. Algorithms can be defeated adversarially.
+
+These don't really concern us in the data compression sense:
+1. We only have as much data as we have already processed (aka history)
+2. If it's statistically relevant, the statistical model will pick it up
+3. ..and that's ok, in fact, it's expected and provable due to the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle).
+
+Modern models today mostly resemble [Markov models](https://en.wikipedia.org/wiki/Markov_model)
+(models which satisfy the [Markov property](https://en.wikipedia.org/wiki/Markov_property)).  
+The way to express this mathematically is:
 
 $$
-P(X_n = x_n | X_{n-1} = x_{n-1}, ..., X_0 = x_0) = P(X_n = x_n | X_{n-1} = x_{n-1})
+P(X_n = x_n \mid X_{n-1} = x_{n-1}, ..., X_0 = x_0) = P(X_n = x_n \mid X_{n-1} = x_{n-1})
 $$
 
-The discrete case of the Markov property suggests the probability [distribution] of the next symbol
-depends only on the current state, not on past states. But although the math (in this form) suggests it,
-states do not have to be of the same type as symbols:
+Except in our case, we're predicting symbols and the states which represent history are not
+necessarily synonymous with symbols. Thus the assumption actually being made is:
 
 $$
-P(S_n = s_n | X_{m-1} = x_{m-1}, ..., X_0 = x_0) = P(S_n = s_n | X_{m-1} = x_{m-1})
+P(S_n = s_n \mid \text{history}) = P(S_n = s_n \mid \text{hash}(\text{history}))
 $$
 
-This is no different than Markov's property for a stochastic process on the set of states \\(\mathcal{S}\\), with
-the only requirement that there exists a bijective mapping between states and symbols:
+Given:
+- a finite set of symbols \\(\mathcal{S} = \\{ s_0, s_1, ... s_m \\}\\)
+- all previously encountered symbols as \\(\text{history} = (S_{n-1} = s_{n-1}, ..., S_0 = s_0)\\)
+- and a context "hashing" function \\(\text{hash}: \mathcal{S}^* \rightarrow \mathcal{C}\\) which maps histories to contexts
 
-$$
-\exists f, f^{-1}: f(s_{n-1}, ..., s_0) = (x_{m-1}, ..., x_0)
-$$
+I'm very suggestively naming this function "hash" because it's best if it exhibits properties well-designed hash functions do:
+- \\(\| \mathcal{C} \| \leq 2^k\\) fits into memory
+- similiar histories are grouped similiarly
+- (hopefully) fast to compute
+- keyword is **decorrelation** (we'll talk about this more in depth later)
 
-Notice how a single state may be anything from a single bit to hundreds of gigabytes data.  
--> How does decorrelation fit into this?
+## Naive approach
 
-We can't ever truly know the probability distribution of a symbol (from a datasource we didn't ourselves generate)
-but we can get extremely close approximations with Markov's property.
+Let's take a look at how one might implement this in code.
+
+![show-me-the-code](show-me-the-code/futurama.jpg)
 
 
 
-Both static and adaptive models rely on one of the simplest assumptions in mathemathcis
+```rust
+let ctx = hash(&history);
+```
 
--> markov property
--> decorrelation
 
--> https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103  
--> https://encode.su/threads/3594-CM-design-discussion?p=69106&viewfull=1#post69106
+## References
+
+- secondary models: <https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103)>
+- text is high order: <https://encode.su/threads/3594-CM-design-discussion?p=69106&viewfull=1#post69106>
 
 # TODO
+
+## Proper decorrelation
+
+-> BWT
+-> spatial compression
+-> 
 
 ---
 
