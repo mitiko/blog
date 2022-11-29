@@ -13,171 +13,69 @@ style = "styles/tech/fsm.css"
 +++
 
 We've [established](@/tech/compression/introduction.md) that the problem of compression mostly
-boils down to good prediction. The better the prediction, the better the compression ratio.
-
-<!-- TLDR -->
-
-All compressors (that I know of) process symbols one by one - whether that would be
-bits, bytes, [UTF-8](https://en.wikipedia.org/wiki/UTF-8) codepoints, words (parsed by a dictionary), pixels, etc.  
-Most symbols are read in the original order that they appear in the file, with the prominent exceptions of
-8x8 [DCTs](https://en.wikipedia.org/wiki/Discrete_cosine_transform) which get
-[zig-zagged](https://en.wikipedia.org/wiki/JPEG#Entropy_coding),
-[BWT pre-processing](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform) and
-other takes on block-sorting.
-
-Block sorting algorithms have a long list of pros and cons but the gist is they're easy to
-<abbr title="Multithreading">MT</abbr>, and they generally improve compression ratios without requiring
-complex models. However, rearranging data often looses information about its initial structure, and
-<abbr title="Block Sorting">BS</abbr> falls far behind state of the art text compressors;
-the best BWT compressor places 22nd in the [LTCB](http://www.mattmahoney.net/dc/text.html).
+boils down to good predictors. The better the prediction, the better the compression ratio.  
+The heart of a compressor is its model.
 
 ## Static vs Adaptive models
 
-The prediction part of the compressor is done by a model.  
-Models can be anything from simple counter to a billion parameter neural network.  
-In practice, compressors require [online learning](https://en.wikipedia.org/wiki/Online_machine_learning)
-and most [Kaggle](https://www.kaggle.com/code?searchQuery=online+learning) models are unusable
-(basically compression filters out cheaters - no overfitting for you!).
-
-There are two types of models - static and adaptive.
-
-Static models don't require per-symbol updates and they're much faster, but they're far from optimal in terms of
-<abbr title="Compression ratio">CR</abbr>.  
-
-<details>
-<summary>Extra: Entropy coders on static models and implicit modeling</summary>
-
-Certain entropy coders actually require static models - [Huffman](https://en.wikipedia.org/wiki/Huffman_coding),
-[tANS](https://en.wikipedia.org/wiki/Asymmetric_numeral_systems#Tabled_variant_(tANS)).  
-Some forms of entropy coding implicitly assume the symbol distribution - [Rice coding](https://en.wikipedia.org/wiki/Golomb_coding#Rice_coding),
-[Elias gamma coding](https://en.wikipedia.org/wiki/Elias_gamma_coding), etc.  
-In fact, it was quite the revolution when Huffman found an algorithm to generate the optimal codes for any given distribution.
-
-Having a static model allows you to use pre-computed tables to eliminate costly division operations for example.
-Such is done in FSE's rANS implementation. Yet another speed optimization.
-
-Morse code is also an entropy coding technique that assumes the symbol distribution of english text.
-However, do keep in mind that morse code is non-binary; the different spacings count as well.  
-If you ever forget morse code and have time on your hands, you can resconstruct it with a big english book and some Huffman.
-
-For the curious souls, you can check cbloom's (small) article/rant on
-[adaptive vs static models](http://cbloomrants.blogspot.com/2012/10/10-02-12-small-note-on-adaptive-vs.html).
-</details>
-
-Adaptive models will be our main focus in this article.  
-An adaptive model updates its internal state at each symbol.
-For simplicity and without much loss of generality we'll assume bitwise modeling.
-
-Historywise, nobody used adaptive models in a meaningful way until [arithmetic coding](https://en.wikipedia.org/wiki/Arithmetic_coding)
-came around.
-
-<details>
-<summary>Extra: Why bitwise modeling is representative of modeling other symbols?</summary>
-
-Bitwise modeling has many advantages:
-- it's easier to store statistics (we'll get to that)
-- it's symbol-universal (you can model pixels, UTF-8, etc)
-
-The main disadvantage is bitwise *coding* is slower.  
-You also lose track of some important symbol information - like which bit you're modeling.
-This is fine, because you can mostly mitigate this within the model itself (keeping track of which bit we're predicting, masking the context, etc.).
-
-But you actually wind up doing much more work trying to *"undo"* the side effects of bitwise modeling, than implementing an n-ary model.  
-And things get weird when the naive implementation actually perfroms better.  
-This is due to some unexpected group probability updates that end up improving compression.
-
-It is quite a fascinating topic and I might end up coming back to it for alphabet reordering but
-the focus of this article is placed elsewhere; and I claim it to be symbol agnostic.
-
-You can learn more about the weirdness of bitwise modeling from
-[cbloom's blog](http://cbloomrants.blogspot.com/2018/05/visualizing-binary-probability-updates.html).
-</details>
-
-## How does a model work?
-
-> "I believe every character in a text file is a result of a *very* high order probability distribution.  
-> Also pixels in images are results of a very high order probability distribution." - Gotty
-
-All models, much like the brain, make the assumption that future events will happen
-about as often as they have happened in the past (within a certain context of course).
-
-This is called [predictive modeling](https://en.wikipedia.org/wiki/Predictive_modelling).  
-The wiki page lists a couple fo limitations to this methodology:
-1. History cannot always accurately predict the future.
-2. Unknown unknowns are an issue.
-3. Algorithms can be defeated adversarially.
-
-These don't really concern us in the data compression sense:
-1. We only have as much data as we have already processed (aka history)
-2. If it's statistically relevant, the statistical model will pick it up
-3. ..and that's ok, in fact, it's expected and provable due to the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle).
-
-Modern models today mostly resemble [Markov models](https://en.wikipedia.org/wiki/Markov_model)
-(models which satisfy the [Markov property](https://en.wikipedia.org/wiki/Markov_property)).  
-The way to express this mathematically is:
+[Predictive models](https://en.wikipedia.org/wiki/Predictive_modelling) generally make the assumption
+that future events will happen about as often as they have happened in the past (within a certain context of course).  
+There exists a close resemblance to [Markov models](https://en.wikipedia.org/wiki/Markov_model) which satisfy the
+[Markov property](https://en.wikipedia.org/wiki/Markov_property):
 
 $$
 P(X_n = x_n \mid X_{n-1} = x_{n-1}, ..., X_0 = x_0) = P(X_n = x_n \mid X_{n-1} = x_{n-1})
 $$
 
-Except in our case, we're predicting symbols and the states which represent history are not
-necessarily synonymous with symbols. Thus the assumption actually being made is:
+Where \\(X = \\{X_t: \Omega \rightarrow \mathcal{S}\\}_{t \in \N}\\) is a stochastic process for
+some [probability space](https://en.wikipedia.org/wiki/Probability_space) \\(\(\Omega, \mathcal{F}, P\)\\)
+and a set of states \\(\mathcal{S}\\).
+
+Except in our case, the [memorylessness](https://en.wikipedia.org/wiki/Memorylessness) property
+is defined a bit more generally and the set of states is actually an alphabet of symbols
+(could be bits, bytes, UTF-8 codepoints, pixels, etc):
 
 $$
-P(S_n = s_n \mid \text{history}) = P(S_n = s_n \mid \text{hash}(\text{history}))
+P(X_n = x_n \mid \text{history}) = P(X_n = x_n \mid \text{hash}(\text{history}))
 $$
 
-Given:
-- a finite set of symbols \\(\mathcal{S} = \\{ s_0, s_1, ... s_m \\}\\)
-- all previously encountered symbols as \\(\text{history} = (S_{n-1} = s_{n-1}, ..., S_0 = s_0)\\)
-- and a context "hashing" function \\(\text{hash}: \mathcal{S}^* \rightarrow \mathcal{C}\\) which maps histories to contexts
+Where \\(\text{history} = (X_{n-1} = x_{n-1}, ..., X_0 = x_0)\\) is a list of the previously encountered symbols and
+\\(\text{hash}: \mathcal{S}^* \rightarrow \mathcal{C}\\) is a function that maps histories to contexts.
 
-I'm very suggestively naming this function "hash" because it's best if it exhibits properties well-designed hash functions do:
-- \\(\| \mathcal{C} \| \leq 2^k\\) fits into memory
-- similiar histories are grouped similiarly
-- (hopefully) fast to compute
-- keyword is **decorrelation** (we'll talk about this more in depth later)
+The main difference between static and adaptive models is how often adaptation is applied.
+Static models get updated on a per block basis, whilst adaptive models run updates online.  
 
-## Naive approach
+When decompressing, adaptive models have to wait for the next symbol to be decoded to make the next prediction.
+This dependency chain slows down decompression tremendously. Static models are much faster in this regard but
+require the context space be much smaller. Usually \\(\| \mathcal{C} \| \leq 2^{16}\\).
+This restriction, however, directly impacts compression ratios.
 
-Let's take a look at how one might implement this in code.
+Thus, static models are often chosen for their superior speed, and adaptive models
+when smaller sizes are priority.
 
-![show-me-the-code](show-me-the-code/futurama.jpg)
+It is [possible](http://cbloomrants.blogspot.com/2012/10/10-02-12-small-note-on-adaptive-vs.html)
+to achieve stronger compression ratios with static models, as well as speed up adaptive models
+but this choice doesn't affect the fundamental problems that need to be solved, and that this article attempts to tackle.  
+Note: static models also allow for faster entropy coding (see [Huffman](https://en.wikipedia.org/wiki/Huffman_coding) and
+[tANS](https://en.wikipedia.org/wiki/Asymmetric_numeral_systems#Tabled_variant_(tANS))).
 
+## Context vs history
 
+Let's take a look at how one might implement a bitwise model.
+-> why bitwise
+
+![Futurama "show me the code" meme](futurama-show-me-the-code.png)
 
 ```rust
 let ctx = hash(&history);
 ```
 
-
-## References
-
-- secondary models: <https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103)>
-- text is high order: <https://encode.su/threads/3594-CM-design-discussion?p=69106&viewfull=1#post69106>
-
-# TODO
-
-## Proper decorrelation
-
--> BWT
--> spatial compression
--> 
-
 ---
 
--> classify models
--> adaptive vs static
--> EXAMPLES! (python)
--> 
+# TODO:
 
-
-Enough chit-chat, let's look at some examples.  
-
-## Contexts and history
-
-From a compressor's POV, at any given point in the data, we have direct access to all
-processed symbols - a *history*.  
+From a compressor's POV, at any given point in the data, we have direct access to the history
+of all previously processed symbol.
 At any point in the file this history is unique (for one. it's of different length).  
 To get rid of the noise, we apply some lossy compression, just like the brain:
 ```rust
@@ -227,9 +125,10 @@ It's simpler to update the context as we go:
 
 ```rust
 // Bytewise order-2 model
+const CTX_SIZE: u32 = 1 << 16;
 struct Model {
     ctx: u16,
-    stats: [Counter; 1 << 16],
+    stats: [Counter; CTX_SIZE]
 }
 
 impl Model {
@@ -327,3 +226,16 @@ $$
 P(bit_6 \mid ctx, bit_5 = 1) = \frac{1}{2}, \quad
 P(bit_6 \mid ctx, bit_5 = 0) = \frac{11}{12}
 $$
+
+## Choosing a good context
+
+-> decorrelation
+-> BWT as a decorrelator
+-> entropy hashing
+-> spatial compression
+
+## References
+
+- secondary models: <https://encode.su/threads/3594-CM-design-discussion?p=69103&viewfull=1#post69103)>
+- text is high order: <https://encode.su/threads/3594-CM-design-discussion?p=69106&viewfull=1#post69106>
+
