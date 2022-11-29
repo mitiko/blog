@@ -150,32 +150,7 @@ impl Model {
 From `/data/book1` let's look at when `ctx = "th"`:
 
 <pre>
-DESCRIPTION OF FARMER OAK -- AN INCIDENT
-When Farmer Oak smiled, <span class="ctx">th</span><span class="lookahead">e</span> corners of his mouth
-spread till <span class="ctx">th</span><span class="lookahead">e</span>y were wi<span class="ctx">th</span><span class="lookahead">i</span>n an unimportant distance of
-his ears, his eyes were reduced to chinks, and diverging
-wrinkles appeared round <span class="ctx">th</span><span class="lookahead">e</span>m, extending upon his
-countenance like <span class="ctx">th</span><span class="lookahead">e</span> rays in a rudimentary sketch of
-<span class="ctx">th</span><span class="lookahead">e</span> rising sun.
-His Christian name was Gabriel, and on working
-days he was a young man of sound judgment, easy
-motions, proper dress, and general good character. On
-Sundays he was a man of misty views, ra<span class="ctx">th</span><span class="lookahead">e</span>r given to
-postponing, and hampered by his best clo<span class="ctx">th</span><span class="lookahead">e</span>s and
-umbrella : upon <span class="ctx">th</span><span class="lookahead">e</span> whole, one who felt himself to
-occupy morally <span class="ctx">th</span><span class="lookahead">a</span>t vast middle space of Laodicean
-neutrality which lay between <span class="ctx">th</span><span class="lookahead">e</span> Communion people
-of <span class="ctx">th</span><span class="lookahead">e</span> parish and <span class="ctx">th</span><span class="lookahead">e</span> drunken section, -- <span class="ctx">th</span><span class="lookahead">a</span>t is, he went
-to church, but yawned privately by <span class="ctx">th</span><span class="lookahead">e</span> time <span class="ctx">th</span><span class="lookahead">e</span> con+
-gegation reached <span class="ctx">th</span><span class="lookahead">e</span> Nicene creed,- and <span class="ctx">th</span><span class="lookahead">o</span>ught of
-what <span class="ctx">th</span><span class="lookahead">e</span>re would be for dinner when he meant to be
-listening to <span class="ctx">th</span><span class="lookahead">e</span> sermon. Or, to state his character as
-it stood in <span class="ctx">th</span><span class="lookahead">e</span> scale of public opinion, when his friends
-and critics were in tantrums, he was considered ra<span class="ctx">th</span><span class="lookahead">e</span>r a
-bad man ; when <span class="ctx">th</span><span class="lookahead">e</span>y were pleased, he was ra<span class="ctx">th</span><span class="lookahead">e</span>r a good
-man ; when <span class="ctx">th</span><span class="lookahead">e</span>y were nei<span class="ctx">th</span><span class="lookahead">e</span>r, he was a man whose
-moral colour was a kind of pepper-and-salt mixture.
-...
+{{ aux_data(path="content/tech/compression/fsm/aux/book1-annotated") }}
 </pre>
 
 Nasty! Who could've predicted this many matches, given `the` is the most common word in the English language.
@@ -183,8 +158,14 @@ Nasty! Who could've predicted this many matches, given `the` is the most common 
 Let's just consider the symbols to be predicted:
 
 <pre>
-<span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead i">i</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead a">a</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead a">a</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead o">o</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span><span class="lookahead e">e</span>
+{{ aux_data(path="content/tech/compression/fsm/aux/book1-postfixes") }}
 </pre>
+
+In fact, let's look at my python script:
+
+```python
+{{ aux_data(path="content/tech/compression/fsm/aux/script.py") }}
+```
 
 A simple acceptor might look like this:
 <img src="graph1.svg">

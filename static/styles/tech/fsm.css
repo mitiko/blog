@@ -1,7 +1,6 @@
 span.ctx { background-color: rgb(255, 255, 132); }
-span.lookahead { background-color: rgb(255, 169, 169); }
-span.lookahead.e { background-color: rgb(255, 169, 169); }
-span.lookahead.a { background-color: rgb(255, 199, 114); }
-span.lookahead.o { background-color: rgb(148, 255, 150); }
-span.lookahead.i { background-color: rgb(156, 192, 255); }
+span._0 { background-color: rgb(255, 169, 169); }
+span._1 { background-color: rgb(255, 199, 114); }
+span._2 { background-color: rgb(148, 255, 150); }
+span._3 { background-color: rgb(156, 192, 255); }
 div#anchor + p > em { color: rgb(255, 106, 0); }
