@@ -149,17 +149,13 @@ impl Model {
 
 From `/data/book1` let's look at when `ctx = "th"`:
 
-<pre>
-{{ aux_data(path="content/tech/compression/fsm/aux/book1-annotated") }}
-</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-annotated") }}</pre>
 
 Nasty! Who could've predicted this many matches, given `the` is the most common word in the English language.
 
 Let's just consider the symbols to be predicted:
 
-<pre>
-{{ aux_data(path="content/tech/compression/fsm/aux/book1-postfixes") }}
-</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-postfixes") }}</pre>
 
 In fact, let's look at my python script:
 
