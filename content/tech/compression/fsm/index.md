@@ -1,5 +1,5 @@
 +++
-title = "On FSMs"
+title = "Compressing Data With Entirely Too Many FSMs"
 # the world of FSMs in data compression
 # !! compressing data with way too many FSMs
 # # this isn't as much abt FSMs as it is about contexts and histories..
@@ -12,8 +12,8 @@ katex = true
 style = "styles/tech/fsm.css"
 +++
 
-We've [established](@/tech/compression/introduction.md) that the problem of compression mostly
-boils down to good predictors. The better the prediction, the better the compression ratio.  
+We've [established](@/tech/compression/introduction.md) that the problem of optimal compression mostly
+boils down to good predictors. The better the predictions, the better the compression ratio.  
 The heart of a compressor is its model.
 
 ## Static vs Adaptive models
@@ -39,7 +39,7 @@ $$
 P(X_n = x_n \mid \text{history}) = P(X_n = x_n \mid \text{hash}(\text{history}))
 $$
 
-Where \\(\text{history} = (X_{n-1} = x_{n-1}, ..., X_0 = x_0)\\) is a list of the previously encountered symbols and
+Where \\(\text{history} = (x_0, ..., x_{n-1})\\) is a list of the previously encountered symbols and
 \\(\text{hash}: \mathcal{S}^* \rightarrow \mathcal{C}\\) is a function that maps histories to contexts.
 
 The main difference between static and adaptive models is how often adaptation is applied.
@@ -59,16 +59,229 @@ but this choice doesn't affect the fundamental problems that need to be solved, 
 Note: static models also allow for faster entropy coding (see [Huffman](https://en.wikipedia.org/wiki/Huffman_coding) and
 [tANS](https://en.wikipedia.org/wiki/Asymmetric_numeral_systems#Tabled_variant_(tANS))).
 
-## Context vs history
-
-Let's take a look at how one might implement a bitwise model.
--> why bitwise
-
 ![Futurama "show me the code" meme](futurama-show-me-the-code.png)
+
+## Context, History and Counters
+
+Let's take a look at how one might implement a model.  
+With the above definitions, you may be tempted to write something like:
+
+```rust
+use std::collections::VecDeque;
+
+struct Model {
+    // Basically a ring buffer
+    history: VecDeque<Symbol>,
+    stats: Vec<Counter>,
+}
+
+impl Model {
+    fn new() -> Self { todo!() }
+    fn predict(&self) -> Prediction {
+        // context is often shortened to ctx/cxt
+        let ctx = hash(&self.history);
+        self.stats[ctx].predict()
+    }
+
+    fn update(&mut self, sym: Symbol) {
+        let ctx = hash(&self.history);
+        self.stats[ctx].update(sym);
+
+        self.history.pop_front();
+        self.history.push_back(sym);
+    }
+}
+
+fn hash(history: &VecDeque<Symbol>) -> usize { todo!() }
+```
+
+To store statistics we use counters. Imagine this as an abstract storage type for now,
+we'll get into how to implement one in a minute.
+
+This code is ~~bad~~ un-ergonomic for two reasons.  
+**First**, in state of the art compressors, the main model used for prediction is actually a mix of many sub-models.
+If each sub-model held its own copy of the history, that'd be very memory inefficient; and for strong compressors
+we'd like to allocate as much memory as possible to holding statistics (more sub-models = better compression).  
+**Second**, good counters are really *really* hard to implement for multi-symbol alphabets.
+Predictions also tend to be hard to quantize well (which directly impacts compression ratios).
+Entropy coders ([rANS](https://en.wikipedia.org/wiki/Asymmetric_numeral_systems#Range_variants_(rANS)_and_streaming),
+[AC](https://en.wikipedia.org/wiki/Arithmetic_coding), [RC](https://en.wikipedia.org/wiki/Range_coding))
+require computing the [CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) for the symbol to be coded
+and often the total to be \\(2^n\\) for divisionless coding.
+
+Although, there're various ingenious tricks ([mixing CDFs](https://fgiesen.wordpress.com/2015/02/20/mixing-discrete-probability-distributions/),
+[precomputing divison tables](https://github.com/rygorous/ryg_rans/blob/master/rans_byte.h#L180-L195),
+[vector decoding CDFs](https://encode.su/threads/3542-AVX2-nibble-decoding-(SIMD-horizontal-scan)))
+to get around a lot of the issues, bitwise coding offers more simplicity without sacrificing too much speed.  
+The bottleneck of strong compressors is memory latency (cache misses on hashtable context lookups) not entropy coding.
+
+Instead, [without loss of generality](https://en.wikipedia.org/wiki/Without_loss_of_generality) (for our purposes),
+let's consider the binary case. To further simplify and give a general idea of what a context looks like,
+let's write a prefix model.
+
+Prefix models take the last n bytes of the history as context. Such models are also called order-n models
+(you may even see them referred to as o1, o2, etc). Here's the simplest order-2 bitwise model:
+
+```rust
+struct Model {
+    ctx: u16,
+    stats: Vec<Counter>
+}
+
+impl Model {
+    fn new() -> Self { todo!() }
+    fn predict(&self) -> u16 {
+        self.stats[ctx].predict()
+    }
+
+    fn update(&mut self, bit: u8) {
+        self.stats[ctx].update(bit);
+        self.ctx = (self.ctx << 1) | u16::from(bit);
+    }
+}
+```
+
+Prefix models are really easy to write because of how simple the *context function* is.
+This one still suffers from not being byte-aligned but we'll fix that later, let's run it now.
+
+Here's a highlight of `/data/book1` (very common test file) from the [Calgary corpus](http://www.data-compression.info/Corpora/CalgaryCorpus/)
+when `ctx = "th"`:
+
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-annotated") }}</pre>
+
+Awesome! It's expected we see a lot of matches for `th` since `the` is the most common word in the English language.
+Let's take a look at the actual symbols to be predicted:
+
+<pre>[th]: {{ aux_data(path="content/tech/compression/fsm/aux/book1-th-postfixes") }}</pre>
+
+It's mostly `eee`-s.  
+Let's take a look at another, how about `ctx = "im"`:
+
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-im-annotated") }}</pre>
+
+This one's not as common and the symbols that follow are much more diverse.
+
+<pre>[im]: {{ aux_data(path="content/tech/compression/fsm/aux/book1-im-postfixes") }}</pre>
+
+It's precisely the counter's responsibility now to model these *postfixes*.  
+So how does a counter look like?
+
+```rust
+// equivalent to interface/template in other languages
+trait CounterTrait {
+    fn new() -> Self;
+    fn predict(&self) -> u16;
+    fn predict(&mut self, bit: u8);
+}
+```
+
+Notice how it has exactly the same methods as a model! That's the hack of it!  
+We can (almost) plug any ordinary predictor in here and model the *postfixes*.
+
+The data compression community doesn't exactly have a very good definition of what a **history**,
+a **context**, a **counter**, or these *postfix symbols* are. We call them that based on how
+they're used, much like any other naturally evolving word in a language.
+
+So let me introduce a bit of a formal definition.
+![A formally dressed frog](formal-frog.jpg)
+
+## Levels of history
+
+The key here is that these so-called *postfix symbols* are a history of their own.
+
+We previously defined \\(\text{history}\\) as the list of all previously processed symbols.  
+We also defined \\(\text{context}\\) to be the output of a hash-like function
+\\(h: \mathcal{S}^* \rightarrow \mathcal{C}\\) which maps histories to contexts.
+We may also call this function the **context function**.
+
+We'll go on to define a class of histories \\(\mathcal{L} = \\{ l_i \\}\\) at each level \\(i\\).  
+We define the 0-th level of history to be the list of symbols up to the point we've processed,
+just like our previous definition of \\(\text{history}\\).  
+Note, it is implicitly assumed we've processed \\(n\\) symbols so far.
+
+$$
+l_0 = (x_0, x_1, ..., x_n)
+$$
+
+To further continue, we must define \\(\text{data}\\) to be the (possibly infinite) list of all symbols.
+$$
+\text{data} = (x_0, x_1, x_2, ...) = \\{ x_t \mid x_t \in \mathcal{S} \\}_{t \in \N}
+$$
+
+We'll also define an indexing operation on this list:
+$$
+\text{data}[t] = x_t
+$$
+
+Another important function, gives us the prefixes of a list:
+$$
+\text{prefixes}(l_0) = \\{(), (x_0), (x_0, x_1), ..., l_0\\}
+$$
+
+maybe even
+$$
+l_1 = \\{ \text{data}[\text{length}(p)] \mid p \in \text{prefixes}(l_0),\ h(p) = h(l_0) \\}
+$$
+
+Then for an indexing operator on histories:
+$$
+l_i[r] = x_{j_r},
+$$
+
+$$
+l_i = \\{ x_{j_0}, x_{j_1}, x_{j_2}, ..., x_{j_k} \\}
+$$
+
+We may inductively define
+$$
+l_{i+1} = \\{ l_i[\text{length}(p)] \mid p \in \text{prefixes}(l_i),\ h(p) = h(l_i) \\}
+$$
+
+---
+# Not finished...
+
+-> bits pred
+-> fix ctx (o0 align)
+
+
+Let's take a look at another, how about `ctx = "oo"`:
+
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-oo-annotated") }}</pre>
+
+That's a lot less matches, but the symbols we ought to predict 
+
+Nasty!
+
+
+[X] bitwise?
+[ ] bitwise sliding (8 steps) instead of 1
+0001_1000 0110_1001
+----t---- ----e----
+[ ] ctx = hash(&history) -> you have direct access to history, but it's easier to just propagate the symbol update to submodels?
+[ ] list of postfixes = level 1 history
+[ ] context is just a hash of history, aka l0 context, l0 history
+[ ] history & context are assumed to be l0 if not specified
+[ ] symbol update vs direct access is crucial actually
+[ ] fsms for symbol updates
+[ ] reinforce binary vs bytewise
+[ ] counter
+[ ] no l0 counter, or order0 doesn't use history at all
+[ ] differences between order0 and order1, and prefix models in general
+[ ] GDCC's T5 (Shielwen) competition
+ -> variant 1) better l0 context with fixed l1 counter
+ -> variant 2) better l1 context with fixed l0 context hash/function
+[ ] introduce APMs
+[ ] history, context, context function, counter, APM/SPM
+
+
 
 ```rust
 let ctx = hash(&history);
 ```
+
+
+-> why bitwise
+
 
 ---
 
@@ -147,15 +360,14 @@ impl Model {
 }
 ```
 
-From `/data/book1` let's look at when `ctx = "th"`:
+## The an variant
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-annotated") }}</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-an-annotated") }}</pre>
 
-Nasty! Who could've predicted this many matches, given `the` is the most common word in the English language.
+And the postfixes:
 
-Let's just consider the symbols to be predicted:
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-an-postfixes") }}</pre>
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-postfixes") }}</pre>
 
 In fact, let's look at my python script:
 

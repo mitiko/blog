@@ -2,7 +2,7 @@
 
 import re
 
-for ctx in ["th", "an", "the"]:
+for ctx in ["th", "im", "oo", "an", "the"]:
     out_annotated = open(f"book1-{ctx}-annotated", "w")
     out_postfixes = open(f"book1-{ctx}-postfixes", "w")
 
