@@ -149,8 +149,81 @@ impl Model {
 This uses a little bit more memory but it's more accurate.  
 I must mention there's another very pretty solution, though it's quite hacky and uses more memory.
 
--- T5 coder here
+<details>
+<summary>Shelwien's solution to o0 alignment</summary>
 
+Adapted from Shelwien's GDCC T5 coder:
+
+```rust
+struct Model {
+    ctx: u32,
+    stats: Vec<Counter>
+}
+
+impl Model {
+    pub fn new() -> Self {
+        Self { ctx: 1 << 16, stats: vec![Counter::new(); 0x100 << 16] }
+    }
+
+    pub fn predict(&self) -> u16 {
+        self.stats[usize::try_from(self.ctx).unwrap()].predict()
+    }
+
+    pub fn update(&mut self, mut bit: u8) {
+        bit = u8::from(bit > 0);
+        self.stats[usize::try_from(self.ctx).unwrap()].update(bit);
+        self.ctx = (self.ctx << 1) | u32::from(bit);
+    }
+
+    pub fn byte(&mut self) -> u8 {
+        self.ctx = (self.ctx & 0xff_ff) | (1 << 16);
+        u8::try_from(self.ctx & 0xff).unwrap()
+    }
+}
+```
+
+Which abuses notation a bit for performance.  
+Memory usage is `1 << 24 = 2 MiB` which usually fits in L3 cache on modern processors.
+The caveat is having to call `byte()` in the entropy coder:
+
+```rust
+fn proc(m: &mut Model, rc: &mut RangeCoder, bit: impl Into<Option<u8>>) {
+    m.update(rc.process(m.predict(), bit.into().unwrap_or(0)))
+}
+
+// Encode:
+let m = &mut Model::new();
+let rc = &mut RangeCoder::new(Mode::Encode);
+
+for byte in stream {
+    proc(m, rc, byte & 0x80); proc(m, rc, byte & 0x40);
+    proc(m, rc, byte & 0x20); proc(m, rc, byte & 0x10);
+    proc(m, rc, byte & 0x08); proc(m, rc, byte & 0x04);
+    proc(m, rc, byte & 0x02); proc(m, rc, byte & 0x01);
+    let _ = model.byte();
+}
+
+// Decode:
+let m = &mut Model::new();
+let rc = &mut RangeCoder::new(Mode::Decode);
+
+for i in 0..stream_len {
+    proc(m, rc, None); proc(m, rc, None);
+    proc(m, rc, None); proc(m, rc, None);
+    proc(m, rc, None); proc(m, rc, None);
+    proc(m, rc, None); proc(m, rc, None);
+    write(model.byte());
+}
+```
+
+This is very inlined and hella hacky. Also it implicitly makes use of some other bitwise weirdities.
+Pretty but hacky, don't write code like this.  
+You can track the state of the context:
+<pre class="o2-ctx">{{ aux_data(path="content/tech/compression/fsm/aux/o2-ctx-sh") }}</pre>
+
+For comparison, this is our version:
+<pre class="o2-ctx">{{ aux_data(path="content/tech/compression/fsm/aux/o2-ctx-mm") }}</pre>
+</details>
 
 Now that everything is correct, we can proceed.  
 Let's take a look of the model in action. This is a highlight of `/data/book1`
