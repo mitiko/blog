@@ -353,6 +353,8 @@ $$
 You might be asking yourself, mitiko, where are the goddamn FSMs??  
 You promised FSMs, [*entirely too many*](https://rust-unofficial.github.io/too-many-lists/) FSMs actually!
 
+![Is this a pigeon meme, but the question is "is this a state machine" and instead of the butterfly, it's a screenshot of the counter code](is-this-fsm.webp)
+
 $$
 \text{History} \rightarrow \text{Context} \rightarrow \text{Counter} \rightarrow \text{Probability}
 $$
@@ -364,6 +366,7 @@ $$
 $$
 \mathcal{A}^* \rightarrow \mathcal{C} \rightarrow \hat{\mathcal{C}} \rightarrow \mathcal{S} \rightarrow \mathcal{P}
 $$
+
 ---
 ## Counters
 
