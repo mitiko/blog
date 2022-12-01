@@ -3,8 +3,8 @@
 import re
 
 for ctx in ["th", "im", "oo", "an", "the"]:
-    out_annotated = open(f"book1-{ctx}-annotated", "w")
-    out_postfixes = open(f"book1-{ctx}-postfixes", "w")
+    out_annotated = open(f"annotated/book1-{ctx}", "w")
+    out_postfixes = open(f"postfixes/book1-{ctx}", "w")
 
     postfix_list = [] # use an ordered set for bigger files
 

@@ -27,9 +27,9 @@ $$
 P(X_n = x_n \mid X_{n-1} = x_{n-1}, ..., X_0 = x_0) = P(X_n = x_n \mid X_{n-1} = x_{n-1})
 $$
 
-Where \\(X = \\{X_t: \Omega \rightarrow \mathcal{S}\\}_{t \in \N}\\) is a stochastic process for
+Where \\(X = \\{X_t: \Omega \rightarrow \mathcal{A}\\}_{t \in \N}\\) is a stochastic process for
 some [probability space](https://en.wikipedia.org/wiki/Probability_space) \\(\(\Omega, \mathcal{F}, P\)\\)
-and a set of states \\(\mathcal{S}\\).
+and a set of states \\(\mathcal{A}\\).
 
 Except in our case, the [memorylessness](https://en.wikipedia.org/wiki/Memorylessness) property
 is defined a bit more generally and the set of states is actually an alphabet of symbols
@@ -40,7 +40,7 @@ P(X_n = x_n \mid \text{history}) = P(X_n = x_n \mid \text{hash}(\text{history}))
 $$
 
 Where \\(\text{history} = (x_0, ..., x_{n-1})\\) is a list of the previously encountered symbols and
-\\(\text{hash}: \mathcal{S}^* \rightarrow \mathcal{C}\\) is a function that maps histories to contexts.
+\\(\text{hash}: \mathcal{A}^* \rightarrow \mathcal{C}\\) is a function that maps histories to contexts.
 
 The main difference between static and adaptive models is how often adaptation is applied.
 Static models get updated on a per block basis, whilst adaptive models run updates online.  
@@ -230,21 +230,21 @@ Let's take a look of the model in action. This is a highlight of `/data/book1`
 (very common test file) from the [Calgary corpus](http://www.data-compression.info/Corpora/CalgaryCorpus/)
 when `ctx = "th"` (and `offset = 0`):
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-annotated") }}</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/annotated/book1-th") }}</pre>
 
 Awesome! We could've expected to see a lot of matches for `"th"` since `"the"` is the most common word in the English language.
 Let's take a look at the actual symbols we'll be predicting:
 
-<pre>[th]: {{ aux_data(path="content/tech/compression/fsm/aux/book1-th-postfixes") }}</pre>
+<pre>[th]: {{ aux_data(path="content/tech/compression/fsm/aux/postfixes/book1-th") }}</pre>
 
 It's mostly `eee`-s. The key is to take advantage of this skewed distribution.  
 Let's take a look at another, how about `ctx = "im"`:
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-im-annotated") }}</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/annotated/book1-im") }}</pre>
 
 This one's not as common and the symbols that follow are much less and more diverse.
 
-<pre>[im]: {{ aux_data(path="content/tech/compression/fsm/aux/book1-im-postfixes") }}</pre>
+<pre>[im]: {{ aux_data(path="content/tech/compression/fsm/aux/postfixes/book1-im") }}</pre>
 
 It's precisely the counter's responsibility now to model these *postfixes*.  
 So how does a counter look like? This is the canonical 32-bit bitwise counter:
@@ -281,9 +281,7 @@ impl Counter {
 
 Notice how it has exactly the same method signatures as our model!  
 The trick is we can treat the *postfix symbols* as a history of their own.
-
-
-We can (almost) plug any ordinary predictor in here and model the *postfixes*.
+And that history has it's own *postfix symbols*, and it's turtles all the way down.
 
 The data compression community doesn't exactly have a very good definition of what a **history**,
 a **context**, a **counter**, or these *postfix symbols* are. We call them that based on how
@@ -293,58 +291,79 @@ So let me introduce a bit of a formal definition.
 ![A formally dressed frog](formal-frog.jpg)
 
 ## Levels of history
-
-The key here is that these so-called *postfix symbols* are a history of their own.  
-And it's turtles all the way down!
-
+  
 We previously defined \\(\text{history}\\) as the list of all previously processed symbols.  
 We also defined \\(\text{context}\\) to be the output of a hash-like function
-\\(h: \mathcal{S}^* \rightarrow \mathcal{C}\\) which maps histories to contexts.
+\\(h: \mathcal{A}^* \rightarrow \mathcal{C}\\) which maps histories to contexts.
 We may also call this function the **context function**.
 
 We'll go on to define a class of histories \\(\mathcal{L} = \\{ l_i \\}\\) at each level \\(i\\).  
 We define the 0-th level of history to be the list of symbols up to the point we've processed,
 just like our previous definition of \\(\text{history}\\).  
-Note, it is implicitly assumed we've processed \\(n\\) symbols so far.
+(Note, it is implicitly assumed we've processed \\(n\\) symbols so far.)
 
 $$
 l_0 = (x_0, x_1, ..., x_n)
 $$
 
-To further continue, we must define \\(\text{data}\\) to be the (possibly infinite) list of all symbols.
+Each next level is also a list. Define an indexing operator on these lists.
 $$
-\text{data} = (x_0, x_1, x_2, ...) = \\{ x_t \mid x_t \in \mathcal{S} \\}_{t \in \N}
-$$
-
-We'll also define an indexing operation on this list:
-$$
-\text{data}[t] = x_t
-$$
-
-Another important function, gives us the prefixes of a list:
-$$
-\text{prefixes}(l_0) = \\{(), (x_0), (x_0, x_1), ..., l_0\\}
-$$
-
-maybe even
-$$
-l_1 = \\{ \text{data}[\text{length}(p)] \mid p \in \text{prefixes}(l_0),\ h(p) = h(l_0) \\}
-$$
-
-Then for an indexing operator on histories:
-$$
-l_i[r] = x_{j_r},
+l_i = ( x_{j_0}, x_{j_1}, x_{j_2}, ..., x_{j_k} )
 $$
 
 $$
-l_i = \\{ x_{j_0}, x_{j_1}, x_{j_2}, ..., x_{j_k} \\}
+l_i[r] = x_{j_r},\ r \leq k
 $$
 
-We may inductively define
+Another important function, gives us the (strict) prefixes of a list:
+$$
+\text{prefixes}(l_i) = \\{(), (x_{j_0}), (x_{j_0}, x_{j_1}), ..., (x_{j_0}, ..., x_{j_{k-1}} )\\}
+$$
+
+Finally, we can inductively define the levels of history:
 $$
 l_{i+1} = \\{ l_i[\text{length}(p)] \mid p \in \text{prefixes}(l_i),\ h(p) = h(l_i) \\}
 $$
 
+The **context function** converts histories to contexts, and we can similiarly define
+levels of context. It also makes a lot of sense to use different functions for the
+different levels.
+
+$$
+c_i = h_i(l_i)
+$$
+
+In practice, higher levels of history are not directly accessible, so it's more efficient
+to define the context function as an update over what the context's value previously was.
+
+$$
+h_i: \mathcal{C} \rightarrow \mathcal{A} \rightarrow \mathcal{C},\ \forall i \gt 0
+$$
+
+$$
+c_i^n = h_i(c_i^{n-1}, l_i[k])
+$$
+
+$$
+\text{vs}\quad c_{i, n} = h_i(c_{i, n-1}, l_i[k])
+$$
+
+## Counters
+
+You might be asking yourself, mitiko, where are the goddamn FSMs??  
+You promised FSMs, [*entirely too many*](https://rust-unofficial.github.io/too-many-lists/) FSMs actually!
+
+$$
+\text{History} \rightarrow \text{Context} \rightarrow \text{Counter} \rightarrow \text{Probability}
+$$
+
+$$
+\text{History} \rightarrow \text{Counter} \rightarrow \text{State} \rightarrow \text{Probability}
+$$
+
+$$
+\mathcal{A}^* \rightarrow \mathcal{C} \rightarrow \hat{\mathcal{C}} \rightarrow \mathcal{S} \rightarrow \mathcal{P}
+$$
 ---
 ## Counters
 
@@ -372,7 +391,7 @@ pub fn predict(&self) -> u16 {
 
 Let's take a look at another, how about `ctx = "oo"`:
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-oo-annotated") }}</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/annotated/book1-oo") }}</pre>
 
 That's a lot less matches, but the symbols we ought to predict 
 
@@ -488,11 +507,11 @@ impl Model {
 
 ## The an variant
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-an-annotated") }}</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/annotated/book1-an") }}</pre>
 
 And the postfixes:
 
-<pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-an-postfixes") }}</pre>
+<pre>{{ aux_data(path="content/tech/compression/fsm/aux/postfixes/book1-an") }}</pre>
 
 
 In fact, let's look at my python script:
