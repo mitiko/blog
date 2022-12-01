@@ -63,119 +63,153 @@ Note: static models also allow for faster entropy coding (see [Huffman](https://
 
 ## Context, History and Counters
 
-Let's take a look at how one might implement a model.  
-With the above definitions, you may be tempted to write something like:
+For the sake of simplicity, and [without loss of generality](https://en.wikipedia.org/wiki/Without_loss_of_generality)
+we'll implement a bitwise model.  
+I go into more detail as to the advantages and disadvantages of modeling bits vs bigger alphabets
+and the difference between the symbols you model versus the symbols you code in [this article](@/tech/compression/bitmodels.md).
 
-```rust
-use std::collections::VecDeque;
-
-struct Model {
-    // Basically a ring buffer
-    history: VecDeque<Symbol>,
-    stats: Vec<Counter>,
-}
-
-impl Model {
-    fn new() -> Self { todo!() }
-    fn predict(&self) -> Prediction {
-        // context is often shortened to ctx/cxt
-        let ctx = hash(&self.history);
-        self.stats[ctx].predict()
-    }
-
-    fn update(&mut self, sym: Symbol) {
-        let ctx = hash(&self.history);
-        self.stats[ctx].update(sym);
-
-        self.history.pop_front();
-        self.history.push_back(sym);
-    }
-}
-
-fn hash(history: &VecDeque<Symbol>) -> usize { todo!() }
-```
-
-To store statistics we use counters. Imagine this as an abstract storage type for now,
-we'll get into how to implement one in a minute.
-
-This code is ~~bad~~ un-ergonomic for two reasons.  
-**First**, in state of the art compressors, the main model used for prediction is actually a mix of many sub-models.
-If each sub-model held its own copy of the history, that'd be very memory inefficient; and for strong compressors
-we'd like to allocate as much memory as possible to holding statistics (more sub-models = better compression).  
-**Second**, good counters are really *really* hard to implement for multi-symbol alphabets.
-Predictions also tend to be hard to quantize well (which directly impacts compression ratios).
-Entropy coders ([rANS](https://en.wikipedia.org/wiki/Asymmetric_numeral_systems#Range_variants_(rANS)_and_streaming),
-[AC](https://en.wikipedia.org/wiki/Arithmetic_coding), [RC](https://en.wikipedia.org/wiki/Range_coding))
-require computing the [CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) for the symbol to be coded
-and often the total to be \\(2^n\\) for divisionless coding.
-
-Although, there're various ingenious tricks ([mixing CDFs](https://fgiesen.wordpress.com/2015/02/20/mixing-discrete-probability-distributions/),
-[precomputing divison tables](https://github.com/rygorous/ryg_rans/blob/master/rans_byte.h#L180-L195),
-[vector decoding CDFs](https://encode.su/threads/3542-AVX2-nibble-decoding-(SIMD-horizontal-scan)))
-to get around a lot of the issues, bitwise coding offers more simplicity without sacrificing too much speed.  
-The bottleneck of strong compressors is memory latency (cache misses on hashtable context lookups) not entropy coding.
-
-Instead, [without loss of generality](https://en.wikipedia.org/wiki/Without_loss_of_generality) (for our purposes),
-let's consider the binary case. To further simplify and give a general idea of what a context looks like,
-let's write a prefix model.
-
-Prefix models take the last n bytes of the history as context. Such models are also called order-n models
-(you may even see them referred to as o1, o2, etc). Here's the simplest order-2 bitwise model:
+Prefix models have one of the simplest *context functions* - they take the last n bytes of history and use it as context.
+Such models are called order-n models (you may even see them referred to as o1, o2, etc).
+Here's an order-2 model in its simplest form:
 
 ```rust
 struct Model {
-    ctx: u16,
+    ctx: u16, // context is often shortened to ctx/cxt
     stats: Vec<Counter>
 }
 
 impl Model {
-    fn new() -> Self { todo!() }
-    fn predict(&self) -> u16 {
-        self.stats[ctx].predict()
+    pub fn new() -> Self {
+        Self { ctx: 0, stats: vec![Counter::new(); 1 << 16] }
     }
 
-    fn update(&mut self, bit: u8) {
-        self.stats[ctx].update(bit);
+    pub fn predict(&self) -> u16 {
+        self.stats[usize::from(self.ctx)].predict()
+    }
+
+    pub fn update(&mut self, bit: u8) {
+        self.stats[usize::from(self.ctx)].update(bit);
         self.ctx = (self.ctx << 1) | u16::from(bit);
     }
 }
 ```
 
-Prefix models are really easy to write because of how simple the *context function* is.
-This one still suffers from not being byte-aligned but we'll fix that later, let's run it now.
+Let's break it down.
 
-Here's a highlight of `/data/book1` (very common test file) from the [Calgary corpus](http://www.data-compression.info/Corpora/CalgaryCorpus/)
-when `ctx = "th"`:
+To store statistics we use counters. Imagine this as an abstract storage type for now,
+we'll get into how to implement one in a minute.  
+
+In the bitwise case predictions can just be an unsigned integer (`u16` for order-2), but for bigger alphabets
+you need to do some clever quantizations.
+
+Passing in `bit` as `u8` instead of `bool` is also a good practical choice internally
+as you often get to do math on it, and it takes the same 8 bits amount of space.
+
+Since we only need to keep track of the last 16 bits of history to compute a context,
+there's no need to pass around a global history object and hash a context out of it.  
+But it's important we keep track of bit alignment, otherwise some contexts may overlap
+unintentionally:
+
+<pre>
+"thA" = <span class="u0">0111_0100</span> <span class="u1">0110_1000</span> 0100_0001
+":4A" = 0<span class="u0">011_1010 0</span><span class="u1">011_0100 0</span>100_0001
+</pre>
+
+That's a quick fix:
+
+```rust
+struct Model {
+    ctx: u16,
+    offset: u32, // bit offset [0-7]
+    stats: Vec<Counter>
+}
+
+impl Model {
+    pub fn new() -> Self {
+        Self { ctx: 0, offset: 0, stats: vec![Counter::new(); 1 << 19] }
+    }
+
+    pub fn predict(&self) -> u16 {
+        let alignment = usize::try_from(self.offset << 16).unwrap();
+        let index = usize:from(self.ctx) | alignment;
+        self.stats[index].predict()
+    }
+
+    pub fn update(&mut self, bit: u8) {
+        let alignment = usize::try_from(self.offset << 16).unwrap();
+        let index = usize:from(self.ctx) | alignment;
+        self.stats[index].update(bit);
+
+        self.ctx = (self.ctx << 1) | u16::from(bit);
+        self.offset = (self.offset + 1) & 7;
+    }
+}
+```
+
+This uses a little bit more memory but it's more accurate.  
+I must mention there's another very pretty solution, though it's quite hacky and uses more memory.
+
+-- T5 coder here
+
+
+Now that everything is correct, we can proceed.  
+Let's take a look of the model in action. This is a highlight of `/data/book1`
+(very common test file) from the [Calgary corpus](http://www.data-compression.info/Corpora/CalgaryCorpus/)
+when `ctx = "th"` (and `offset = 0`):
 
 <pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-th-annotated") }}</pre>
 
-Awesome! It's expected we see a lot of matches for `th` since `the` is the most common word in the English language.
-Let's take a look at the actual symbols to be predicted:
+Awesome! We could've expected to see a lot of matches for `"th"` since `"the"` is the most common word in the English language.
+Let's take a look at the actual symbols we'll be predicting:
 
 <pre>[th]: {{ aux_data(path="content/tech/compression/fsm/aux/book1-th-postfixes") }}</pre>
 
-It's mostly `eee`-s.  
+It's mostly `eee`-s. The key is to take advantage of this skewed distribution.  
 Let's take a look at another, how about `ctx = "im"`:
 
 <pre>{{ aux_data(path="content/tech/compression/fsm/aux/book1-im-annotated") }}</pre>
 
-This one's not as common and the symbols that follow are much more diverse.
+This one's not as common and the symbols that follow are much less and more diverse.
 
 <pre>[im]: {{ aux_data(path="content/tech/compression/fsm/aux/book1-im-postfixes") }}</pre>
 
 It's precisely the counter's responsibility now to model these *postfixes*.  
-So how does a counter look like?
+So how does a counter look like? This is the canonical 32-bit bitwise counter:
 
 ```rust
-// equivalent to interface/template in other languages
-trait CounterTrait {
-    fn new() -> Self;
-    fn predict(&self) -> u16;
-    fn predict(&mut self, bit: u8);
+#[derive(Copy, Clone)]
+struct Counter {
+    counts: [u16; 2]
+}
+
+impl Counter {
+    pub fn new() -> Self {
+        Self { counts: [0; 2] }
+    }
+
+    pub fn predict(&self) -> u16 {
+        let c0 = 1 + u32::from(self.counts[0]);
+        let c1 = 1 + u32::from(self.counts[1]);
+
+       u16::try_from((1 << 16) * c1 / (c0 + c1)).unwrap()
+    }
+
+    pub fn update(&mut self, bit: u8) {
+        self.counts[usize::from(bit)] += 1;
+
+        // normalize counts
+        if self.counts[0] == u16::MAX || self.counts[1] == u16::MAX {
+            self.counts[0] >>= 1;
+            self.counts[1] >>= 1;
+        }
+    }
 }
 ```
 
-Notice how it has exactly the same methods as a model! That's the hack of it!  
+Notice how it has exactly the same method signatures as our model!  
+The trick is we can treat the *postfix symbols* as a history of their own.
+
+
 We can (almost) plug any ordinary predictor in here and model the *postfixes*.
 
 The data compression community doesn't exactly have a very good definition of what a **history**,
@@ -187,7 +221,8 @@ So let me introduce a bit of a formal definition.
 
 ## Levels of history
 
-The key here is that these so-called *postfix symbols* are a history of their own.
+The key here is that these so-called *postfix symbols* are a history of their own.  
+And it's turtles all the way down!
 
 We previously defined \\(\text{history}\\) as the list of all previously processed symbols.  
 We also defined \\(\text{context}\\) to be the output of a hash-like function
@@ -238,7 +273,25 @@ l_{i+1} = \\{ l_i[\text{length}(p)] \mid p \in \text{prefixes}(l_i),\ h(p) = h(l
 $$
 
 ---
+## Counters
+
+
+```rust
+pub fn predict(&self) -> u16 {
+    let c0 = 1 + u32::from(self.counts[0]);
+    let c1 = 1 + u32::from(self.counts[1]);
+
+    // rounding
+    let p = (1 << 17) * c1 / (c0 + c1);
+    u16::from((p >> 1) + (p & 1))
+}
+```
+
+
 # Not finished...
+
+
+
 
 -> bits pred
 -> fix ctx (o0 align)
