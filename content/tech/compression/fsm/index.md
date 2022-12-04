@@ -12,6 +12,16 @@ katex = true
 style = "styles/tech/fsm.css"
 +++
 
+Contexts, Histories article first?
+Then Counters?
+Then APMs?
+
+$$
+\mathcal{A}^* \rightarrow \mathcal{C} \rightarrow \mathcal{S} \rightarrow \mathcal{P}
+$$
+
+![compression components](compression-components1.png)
+
 We've [established](@/tech/compression/introduction.md) that the problem of optimal compression mostly
 boils down to good predictors. The better the predictions, the better the compression ratio.  
 The heart of a compressor is its model.
@@ -264,7 +274,7 @@ impl Counter {
         let c0 = 1 + u32::from(self.counts[0]);
         let c1 = 1 + u32::from(self.counts[1]);
 
-       u16::try_from((1 << 16) * c1 / (c0 + c1)).unwrap()
+        u16::try_from((1 << 16) * c1 / (c0 + c1)).unwrap()
     }
 
     pub fn update(&mut self, bit: u8) {
@@ -342,10 +352,8 @@ $$
 
 $$
 c_i^n = h_i(c_i^{n-1}, l_i[k])
-$$
-
-$$
-\text{vs}\quad c_{i, n} = h_i(c_{i, n-1}, l_i[k])
+\quad\text{vs}\quad
+c_{i, n} = h_i(c_{i, n-1}, l_i[k])
 $$
 
 ## Counters
@@ -353,7 +361,39 @@ $$
 You might be asking yourself, mitiko, where are the goddamn FSMs??  
 You promised FSMs, [*entirely too many*](https://rust-unofficial.github.io/too-many-lists/) FSMs actually!
 
+Behave yourself! **Counters** are actually state machines; with 32-bit states to be exact.  
+
 ![Is this a pigeon meme, but the question is "is this a state machine" and instead of the butterfly, it's a screenshot of the counter code](is-this-fsm.webp)
+
+Models map a context to a counter/state.
+Let's call this function \\(s\\).
+$$
+s: \mathcal{C} \rightarrow \mathcal{S}
+$$
+
+The set of all states is \\(\mathcal{S}\\) but it's actually possible
+to send different contexts to different state machines based on the context:
+$$
+\mathcal{S} = \bigcup\limits_i\ \mathcal{S}_i
+$$
+
+The goal of any counter / state machine is to best model higher level histories.
+That is, we're searching for:
+
+```
+
+```
+
+One thing that you quickly learn in data compresion is that information is
+seperated from representation. It's quite obvious if you think of counters
+as directed graph with second degree edges (because we're modeling bitwise),
+but the order of the states doesn't matter, as long as they're connected the
+same way and the initial state is the same isomorphically.
+
+
+Where the set of states is \\(\mathcal{S}\\)
+
+
 
 $$
 \text{History} \rightarrow \text{Context} \rightarrow \text{Counter} \rightarrow \text{Probability}
@@ -366,6 +406,31 @@ $$
 $$
 \mathcal{A}^* \rightarrow \mathcal{C} \rightarrow \hat{\mathcal{C}} \rightarrow \mathcal{S} \rightarrow \mathcal{P}
 $$
+
+There's a lot of low-hanging fruit in our initial implementation.  
+For one, we ought to do rounding, instead of flooring probabilities.  
+Same with normalizing counts.
+
+```rust
+pub fn predict(&self) -> u16 {
+    let c0 = 1 + u32::from(self.counts[0]);
+    let c1 = 1 + u32::from(self.counts[1]);
+
+    // rounding
+    let p = (1 << 17) * c1 / (c0 + c1);
+    u16::from((p >> 1) + (p & 1))
+}
+
+pub fn update(&mut self, bit: u8) {
+    self.counts[usize::from(bit)] += 1;
+
+    // normalize counts
+    if self.counts[0] == u16::MAX || self.counts[1] == u16::MAX {
+        self.counts[0] = (self.counts[0] >> 1) + (self.counts[0] & 1);
+        self.counts[1] = (self.counts[1] >> 1) + (self.counts[1] & 1);
+    }
+}
+```
 
 ---
 ## Counters
