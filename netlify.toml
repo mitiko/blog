@@ -5,7 +5,7 @@ command = "zola build"
 
 [build.environment]
 # Set the version name that you want to use and Netlify will automatically use it.
-ZOLA_VERSION = "0.15.3"
+ZOLA_VERSION = "0.16.1"
 
 # The magic for deploying previews of branches.
 # We need to override the base url with whatever url Netlify assigns to our
@@ -14,19 +14,3 @@ ZOLA_VERSION = "0.15.3"
 
 [context.deploy-preview]
 command = "zola build --base-url $DEPLOY_PRIME_URL --drafts"
-
-[dev]
-framework = "zola"
-command = "zola --config local.config.toml serve --drafts"
-
-[[redirects]]
-  from = "https://tech.mitikox.top/*"
-  to = "https://mitikox.top/tech/:splat"
-  status = 200
-  force = true
-  
-[[redirects]]
-  from = "https://blobs.mitikox.top/*"
-  to = "https://mitikox.top/blobs/:splat"
-  status = 200
-  force = true

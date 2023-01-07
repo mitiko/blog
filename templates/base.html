@@ -4,10 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/base.css">
     <link rel="icon" href="{{ config.extra.favicon_url }}">
-    <!-- Inline Global CSS -->
-    <!-- TODO: Maybe fetch the base as a seperate file so it gets cached? -->
-    {{ macros::inline_css(path="/styles/base.css") }}
     <!-- Inline Section CSS -->
     {% block section_inline_css %} {% endblock %}
     <!-- Inline Subsection CSS -->
@@ -18,9 +16,6 @@
     {% block inline_css %} {% endblock %}
     <title>
         {% block title %}
-            {% if section.title %}
-                {{ section.title }} · 
-            {% endif %}
             {% if page.title %}
                 {{ page.title }} · 
                 {% set parent_path = page.ancestors | last %}
@@ -38,8 +33,6 @@
     <main>
         {% block content %} {% endblock %}
     </main>
-    <footer>
-        <!-- TODO -->
-    </footer>
+    <footer></footer>
 </body>
 </html>

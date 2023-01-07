@@ -1,0 +1,14 @@
+nav {
+    font-size: 1.2em;
+
+    & a {
+        color: var(--t1);
+        text-decoration: underline transparent;
+        transition: text-decoration-color 0.3s;
+    }
+
+    & a:hover {
+        text-decoration-color: var(--c1);
+        text-underline-offset: 0.2rem;
+    }
+}

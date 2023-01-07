@@ -1,0 +1,23 @@
+details {
+    margin-block: 1rem;
+
+    $a: 0.2rem; $b: 0.8rem;
+    & > summary {
+        cursor: pointer;
+        border-left: ($a + $b) solid transparent;
+    }
+
+    & > summary::before { /* margin hack */
+        content: '';
+        margin-inline: 0.1rem;
+    }
+
+    &[open] {
+        border-left: $a solid var(--c1);
+        padding-left: $b;
+    }
+
+    &[open] > summary {
+        border-left: none;
+    }
+}
