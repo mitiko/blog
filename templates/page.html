@@ -15,6 +15,10 @@
     <h2 id="subtitle">{{ page.extra.subtitle }}</h2>
   {% endif %}
   <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
+  <p>
+    <span id="read-time">read-time: <span>{{ page.reading_time }} mins</span></span> |
+    <span id="word-count">word-count: <span>{{ page.word_count }}</span></span>
+  </p>
 </header>
 
 {{ page.content | safe }}

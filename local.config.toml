@@ -4,6 +4,7 @@ build_search_index = false # different
 
 minify_html = true
 generate_feed = true
+compile_sass = true
 
 taxonomies = [
     { name = "type", feed = true},
