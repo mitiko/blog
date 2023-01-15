@@ -11,6 +11,8 @@ span.last-word {
 
 strong { font-weight: 600; }
 .error { color: hsl(0, 100%, 70%); }
+.color1 { color: var(--c1); }
+.color2 { color: var(--c2); }
 
 ::marker { color: var(--c1); }
 ::selection {
