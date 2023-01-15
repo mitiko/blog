@@ -7,7 +7,7 @@ details {
         border-left: ($a + $b) solid transparent;
     }
 
-    & > summary::before { /* margin hack */
+    & > summary::before { // margin hack
         content: '';
         margin-inline: 0.1rem;
     }

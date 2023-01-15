@@ -8,7 +8,6 @@ img {
 }
 
 svg, img[src$=".svg"] {
-    max-width: 20rem;
-    border: none;
-    margin-inline: auto;
+    border: none; // no border readius
+    margin-inline: auto; // center
 }

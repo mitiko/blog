@@ -3,7 +3,7 @@ pre {
     padding: 0.8rem;
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: 6px;
-    color: var(--t2) !important; /* overwrite zola's code colors */
+    color: var(--t2) !important; // overwrite zola's code colors
 
     &[data-linenos] tr > td:first-child {
         padding-right: 0.6rem;
