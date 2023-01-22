@@ -1,5 +1,8 @@
 +++
 title = "mitiko"
+
+[extra]
+tree = true
 +++
 
 Hi, my name is **Dimitar Rusev** and this is my corner of the internet.

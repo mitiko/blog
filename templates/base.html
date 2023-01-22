@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/base.css">
+    {% if page.extra.tree or section.extra.tree or config.extra.tree %}
+        <link rel="stylesheet" href="/components/tree.css">
+    {% endif %}
     <link rel="icon" href="{{ config.extra.favicon_url }}">
     <!-- Inline Section CSS -->
     {% block section_inline_css %} {% endblock %}
