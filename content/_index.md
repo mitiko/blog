@@ -26,16 +26,5 @@ This site is built with [Zola](https://getzola.org), and hosted on [Netlify](htt
 
 ### Contact
 
-You can email me <a id="email">obfusctated by js</a>.
-
-
-<script>
-// obfuscate email so it's harder on the web crawlers
-const rot13 = (str) => str.replace(/[a-z]/gi, x => String.fromCharCode(x.charCodeAt(0) + (x.toLowerCase() <= 'm' ? 13 : -13)));
-let obfsName = "zvgvxbqri";
-let addr = rot13(obfsName) + "@" + "gmail.com";
-let emailEl = document.getElementById("email");
-emailEl.innerText = addr;
-emailEl.href = "mailto:" + addr;
-</script>
+You can email me at <a href="https://rot13.com">rot13</a>(zvgvxbqri)@gmail.com.
 
