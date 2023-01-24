@@ -176,4 +176,5 @@ https://codeberg.org/annaaurora/annaaurora.eu/src/branch/be-crime-do-gay-webring
 ## Other
 
 https://cyber.dabamos.de/
-
+https://aly.fish/en/
+https://lethalbit.net/
