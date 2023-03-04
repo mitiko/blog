@@ -3,6 +3,7 @@
     --t2: rgb(75, 75, 75);
     --c1: hsl(177, 100%, 28%);
     --c2: hsl(283, 81%, 43%);
+    --c2t: hsla(283, 81%, 43%, 0.2); // transparent
 }
 
 body, html { margin: 0; padding: 0; }
@@ -16,9 +17,7 @@ $c: $b / $font-ratio; // maintain ratio
 h1 { font-size: $a; }
 h2 { font-size: $b; font-weight: 300; } // wow modern
 h3 { font-size: $c; }
-
 p { line-height: 1.4; }
-li:not(:last-child) { margin-block-end: 0.8rem; }
 
 header {
     margin-block: 3rem;

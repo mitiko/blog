@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block subsection_inline_css %}
+  {{ macros::inline_css(path="/favs/music.css") }}
+{% endblock subsection_inline_css %}
+
+{% block content %}
+<header>
+  <h1 id="title">{{ page.title }}</h1>
+
+  <h2 id="artist">
+    {{ page.taxonomies.artist | first }}
+    {% if page.extra.featuring %}
+      <span id="featuring">ft {{ page.extra.featuring }}</span>
+    {% endif %}
+  </h2>
+</header>
+
+{{ page.content | safe }}
+
+{% if page.extra.link %}
+<br>
+<p>
+  <a href="{{ page.extra.link }}">Listen here</a>
+</p>
+{% endif %}
+
+{% endblock content %}

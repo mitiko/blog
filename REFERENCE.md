@@ -4,54 +4,32 @@ Not so common commands I often forget.
 
 ## CI/CD
 
-"[skip netlify]" in git commit message to not trigger a deploy on netlify.
+[skip netlify] in commit message doesn't trigger deployment
 
 ## Latex
 
-\mathcal{S} -> fancy symbols  
-By default capital letters are not fancy-fied.
-
+\mathcal{S} -> fancy symbols (by default capital letters are not fancy-fied)  
 \mid -> conditional probability  
 \quad -> spacing  
 \qquad -> double space
 
-
 ## Markdown
 
-### Striketrough
-
 ```md
-~~crossed~~
+~~striketrough~~
+<hr> = ---
+[inline link](https://example.com "Title shows when hovered")
+[reference link][1]
+[1]: https://example.com "Title"
+![images](/imgs/a.jpg "Descripton shows when hovered")
 ```
 
-### Horizontal line
+## Workflow
 
-```md
-Paragraph 1
-
----
-
-Paragraph 2
+Formatting music pages:
+```
+find: ([^\s])\n(.)
+replace: $1  \n$2
+span + br hack -> <p><br></p>
 ```
 
-### Titled link
-
-```md
-[link text](https://example.com "Title shows when hovered")
-```
-
-### Reference links
-
-```md
-[link text][1]
-[other][2]
-
-[1]: https://example.com "Title 1"
-[2]: https://other.com "Title 2"
-```
-
-### Images
-
-```md
-![alt text](/imgs/a.jpg "Descripton shows when hovered")
-```
