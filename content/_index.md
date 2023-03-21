@@ -25,6 +25,7 @@ This site is built with [Zola](https://getzola.org), and hosted on [Netlify](htt
   - [{{ color1(str="~/favs/music") }} (lyrics included)](/favs/music)
   - [{{ color1(str="~/favs/movies") }} (rewatched 3+)](/favs/movies)
 - [{{ color1(str="~/lore") }} non-ephemeral content](/lore)
+- [{{ color1(str="~/blog") }} articles](/blog)
 </nav>
 
 ## About
