@@ -4,7 +4,9 @@ Not so common commands I often forget.
 
 ## CI/CD
 
-[skip netlify] in commit message doesn't trigger deployment
+
+`[skip netlify]` in commit message doesn't trigger deployment.  
+`tf-apply` and `tf-destroy` in commit message run terraform.
 
 ## Latex
 
