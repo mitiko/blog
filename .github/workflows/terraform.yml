@@ -10,11 +10,14 @@ jobs:
     name: 'Terraform apply'
     runs-on: ubuntu-latest
     if: ${{ contains(github.event.head_commit.message, 'tf-apply') }}
+    defaults:
+      run:
+        working-directory: ./infrastructure
+        shell: bash
 
     steps:
     - uses: actions/checkout@v3
     - uses: hashicorp/setup-terraform@v1
-    - run: cd infrastructure
     - run: terraform fmt -check
     - run: terraform init
       env:
@@ -30,11 +33,14 @@ jobs:
     name: 'Terraform destroy'
     runs-on: ubuntu-latest
     if: ${{ contains(github.event.head_commit.message, 'tf-destroy') }}
+    defaults:
+      run:
+        working-directory: ./infrastructure
+        shell: bash
 
     steps:
     - uses: actions/checkout@v3
     - uses: hashicorp/setup-terraform@v1
-    - run: cd infrastructure
     - run: terraform init
       env:
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
