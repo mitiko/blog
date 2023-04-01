@@ -1,0 +1,43 @@
+name: 'Terraform validate & apply'
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: ["infrastructure/**"]
+
+jobs:
+  terraform-apply:
+    name: 'Terraform apply'
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.message, 'tf-apply') }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform fmt -check
+    - run: terraform init
+      env:
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+    - run: terraform validate
+    - run: terraform plan -input=false -out plan.tfplan
+    - run: terraform apply -auto-approve -input=false plan.tfplan
+
+  terraform-destroy:
+    name: 'Terraform destroy'
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.message, 'tf-destroy') }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v1
+    - run: terraform init
+      env:
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+    - run: terraform validate
+    - run: terraform destroy -auto-approve -input=false
