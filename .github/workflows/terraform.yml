@@ -1,4 +1,4 @@
-name: 'Terraform validate & apply'
+name: 'Terraform 1'
 
 on:
   push:
