@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<style>
+table {
+    border-collapse: collapse;
+}
+</style>
+
+{% set data = load_data(path="content/car-servicing/data.toml", format="toml") %}
+
+<table>
+    <thead>
+        <th>Date</th>
+        <th>Kilometers</th>
+        <th>Servicing</th>
+        <th>Mechanic</th>
+    </thead>
+<tbody>
+    {% for service_event in data["ServiceEvents"] %}
+        {% for service in service_event["Services"] %}
+        <tr>
+            <td>{{ service_event["date"] | date(format="%d %B %Y") }}</td>
+            <td>{{ service_event["megameters"] }}'000</td>
+            <td>{{ service["type"] | capitalize }} {{ service["part"] }}</td>
+            <td>{{ service_event["mechanic"] }}</td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+</tbody>
+</table>
+
+{% endblock content %}
