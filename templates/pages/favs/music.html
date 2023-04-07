@@ -10,6 +10,10 @@
 
   <h2 id="artist">
     {{ page.taxonomies.artist | first }}
+    {# TODO: use a loop if more artists? #}
+    {% if page.taxonomies.artist | length >= 2 %}
+      & {{ page.taxonomies.artist[1] }}
+    {% endif %}
     {% if page.extra.featuring %}
       <span id="featuring">ft {{ page.extra.featuring }}</span>
     {% endif %}
