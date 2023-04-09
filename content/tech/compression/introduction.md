@@ -8,19 +8,23 @@ template = "sections/todo.html"
 katex = true
 +++
 
-From [wikipedia](https://en.wikipedia.org/wiki/Data_compression):
-> In information theory, data compression is the process of encoding information using fewer bits than the original representation.
-> 
-> Compression can be either lossy or lossless.  
-> No information is lost in lossless compression.
+There are three parts of any compression algorithm:
+- Decoupling - making symbols independent
+- Probability estimation - predicting future symbols
+- Encoding - transforming symbols & their probabilites into bits
 
+It's hard to draw the line at what counts as a decoupler & what counts as
+an estimator, so those two are often merged into a single model.
 
-Let \\(s = \Alpha^*\\) be a string over an alphabet of symbols \\(\Alpha\\).
+Where we have the following spaces:
+- \\(\mathcal{A}^*\\) - observed history
+- \\(\mathcal{C}\\) - context space
+- \\(\mathcal{S}\\) - counter/state space
+- \\(\mathcal{P}\\) - probability space
 
-In practice symbols are unicode codepoints, bytes, LZ match pairs, nibbles, or just bits.
+And the functions that map between them:
+- \\(f: \mathcal{A}^* \rightarrow \mathcal{C}\\) - context function
+- \\(s: \mathcal{C} \rightarrow \mathcal{S}\\) - \[context\] lookup function
+- \\(p: \mathcal{S} \rightarrow \mathcal{P}\\) - probability mapping
 
-
-Lossless compression is achieved iff:
-$$
-D(E(s)) = s
-$$
+Each of these on its own does a sort of [lossy compression](https://en.wikipedia.org/wiki/Lossy_compression) on its input.
