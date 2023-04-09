@@ -49,7 +49,6 @@ const ctxExample = (data, count, ctx, sym) => {
 
 const l1Example = (data, count, ctx, sym) => {
     let l1 = document.getElementsByClassName("l1")[0];
-    // let i = text.length >> 1;
     let i = 0;
 
     const func = () => {
@@ -73,12 +72,10 @@ const l1Example = (data, count, ctx, sym) => {
             .join("")
             .replace("\n", "\\n");
 
-            // if (++i >= text.length) i = text.length >> 1;
             if (++i >= text.length) i = 0;
     };
 
-    // func();
-    setInterval(func, 100);
+    setInterval(func, 1600);
 };
 
 historyExample(g_data[0], g_count[0], g_sym[0]);
