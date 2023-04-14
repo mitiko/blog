@@ -28,7 +28,7 @@
         {% endblock title %}
         mitiko.x
     </title>
-    {% if page.extra.katex or section.extra.katex or config.extra.katex %}
+    {% if page.extra.math or section.extra.math or config.extra.math %}
         {% include 'katex.html' %}
     {% endif %}
 </head>
