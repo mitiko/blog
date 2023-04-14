@@ -1,0 +1,90 @@
+div {
+    /* border: 1px solid red; */
+    transform: rotate(-13deg);
+    border: 1px solid var(--c1);
+    border-radius: 6px;
+    padding: 0.8rem;
+}
+div:first-of-type { margin-block-start: 5rem; }
+div:last-of-type { margin-block-end: 5rem; }
+
+/* Walkthrough */
+
+/* Version 1 */
+span.v1, span.v1-container {
+    display: block;
+    border: 1px solid red;
+}
+span.v1 { transform: rotate(-13deg); }
+span.v1.first { margin-block-start: 5rem; }
+span.v1.last { margin-block-end: 5rem; }
+
+/* Version 2 */
+span.v2 {
+    display: block;
+    border: 1px solid red;
+}
+span.v2::before {
+    content: '';
+    display: block;
+    float: right;
+    width: 20ch;
+    height: 9rem;
+    border: 1px solid green;
+}
+
+/* Version 3 */
+span.v3 {
+    display: block;
+    border: 1px solid red;
+}
+
+span.v3::before {
+    content: '';
+    display: block;
+    float: right;
+    width: 20ch;
+    height: 9rem;
+    border: 1px solid green;
+    shape-outside: polygon(0 48%, 100% 0, 100% 100%, 100% 100%);
+}
+
+/* Version 4 */
+span.v4 {
+    display: block;
+    border: 1px solid red;
+    transform: rotate(-13deg);
+    margin-block: 5rem; /* border still visible, don't want actual overflows yet. */
+    padding-block: 5rem;
+}
+span.v4::before {
+    content: '';
+    display: block;
+    float: right;
+    width: 20ch;
+    height: 9rem;
+    border: 1px solid green;
+    shape-outside: polygon(0 48%, 100% 0, 100% 100%, 100% 100%);
+}
+
+/* Version 5 */
+span.v5 {
+    display: block;
+    border: 1px solid red;
+    transform: rotate(-13deg);
+    margin-top: 11rem;
+    transform-origin: 0 0;
+}
+span.v5::before {
+    content: '';
+    display: block;
+    border: 1px solid green;
+    float: right;
+    width: 100%;
+    height: calc(70ch * sin(13deg));
+    shape-outside: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+}
+
+
+
+

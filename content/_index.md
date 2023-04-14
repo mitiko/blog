@@ -5,10 +5,9 @@ title = "mitiko"
 tree = true
 +++
 
-Hi, my name is **Dimitar Rusev** and this is my corner of the internet.
+Hi, and welcome to my corner of the internet.
 
 ```bash
-# online, my moniker is mitiko
 alias mitiko="Dimitar Rusev"
 ```
 
@@ -25,6 +24,7 @@ This site is built with [Zola](https://getzola.org), and hosted on [Netlify](htt
   - [{{ color1(str="~/favs/music") }} (lyrics included)](/favs/music)
   - [{{ color1(str="~/favs/movies") }} (rewatched 3+)](/favs/movies)
 - [{{ color1(str="~/lore") }} non-ephemeral content](/lore)
+- [{{ color1(str="~/experiments") }} are you even l33t?](/experiments)
 </nav>
 
 ## About
