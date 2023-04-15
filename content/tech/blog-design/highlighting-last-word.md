@@ -12,7 +12,6 @@ TODO:
 Mention:
 1) css first letter selection
 2) the messy business with () and "" -- maybe mention that later for the patched version
-3) [no deploy] netlify
 
 
 Next:

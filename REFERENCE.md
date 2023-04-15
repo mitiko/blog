@@ -4,8 +4,7 @@ Not so common commands I often forget.
 
 ## CI/CD
 
-
-`[skip netlify]` in commit message doesn't trigger deployment.  
+<!-- Haven't configured a way to skip deployments with Cloudflare yet -->
 `tf-apply` and `tf-destroy` in commit message run terraform.
 
 ## Latex
@@ -25,13 +24,3 @@ Not so common commands I often forget.
 [1]: https://example.com "Title"
 ![images](/imgs/a.jpg "Descripton shows when hovered")
 ```
-
-## Workflow
-
-Formatting music pages:
-```
-find: ([^\s])\n(.)
-replace: $1  \n$2
-span + br hack -> <p><br></p>
-```
-
