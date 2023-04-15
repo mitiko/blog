@@ -12,7 +12,7 @@ Hi, my name is **Dimitar Rusev** and this is my corner of the internet.
 alias mitiko="Dimitar Rusev"
 ```
 
-This site is built with [Zola](https://getzola.org), and hosted on [Netlify](https://netlify.com).
+This site is built with [Zola](https://getzola.org), and hosted on [Cloudlfare Pages](https://pages.cloudflare.com/).
 
 ## Sitemap
 
