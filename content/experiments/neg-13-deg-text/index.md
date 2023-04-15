@@ -186,7 +186,8 @@ div::before {
 
     float: right;
     width: 100%;
-    height: calc(70ch * sin(13deg));
+    --width: min(calc(100vw - 2rem), 70ch);
+    height: calc(var(--width) * sin(13deg));
     shape-outside: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
 }
 ```

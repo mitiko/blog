@@ -1,3 +1,5 @@
+main { overflow: hidden; }
+
 div {
     /* border: 1px solid red; */
     transform: rotate(-13deg);
@@ -81,7 +83,8 @@ span.v5::before {
     border: 1px solid green;
     float: right;
     width: 100%;
-    height: calc(70ch * sin(13deg));
+    --width: min(calc(100vw - 2rem), 70ch);
+    height: calc(var(--width) * sin(13deg));
     shape-outside: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
 }
 
