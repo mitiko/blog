@@ -1,0 +1,28 @@
+name: 'Cloudflare'
+
+on:
+  pull_request:
+    types: [opened, reopened]
+  push:
+    branches: ["main"]
+
+jobs:
+  cloudflare-pr-comment:
+    name: 'Cloudflare PR comment'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm install qrcode-svg
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const qrcode = require('qrcode-svg')
+            const script = require('./.github/workflows/scripts/cloudflare-pr-comment.js')
+            // console.log(script({qrcode, github, context}))
+            const dataUri = script({qrcode})
+            console.log(dataUri)
