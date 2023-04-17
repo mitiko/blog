@@ -12,7 +12,23 @@ link = "https://youtu.be/01D-IC6P-lM"
 
 ## Intro
 
+*Oh, hello I didn't hear you come in but I'm certainly glad that you did.
+My name is Evan Alice and I'm excited to share with you the latest in our groundbreaking effort to provide an array of products and experiences for the modern american.*
 
+*For nearly 20 years entrepreneurs, scientists and visionaries have struggled to understand what changes the new millennium would bring to the ways in which we experience art and consume entertainment.
+One thing's for sure Haas - it's out with the old and in with the new.
+But don't worry old-timer, you can still come along, provided you bring that fresh perspective intel. What's clear is that today's Americans want to be inundated and stimulated like never before.*
+
+<span class="l1">*No longer will we abide the demarcations of medium or the limits placed on us by such dated concepts as story, and structure, and genre.*</span>
+*After all, what good are comfort and tidiness in a world where the most emotionally devastating conversations can occur when you're holding in a fart or something.
+It's in this spirit that I'm proud to announce our latest venture: Fever Dolls -
+a multimedia varietal experience drawing on the hottest and freshest sounds in modern sensory consumption, all in stereo.*
+
+*Along with myself, my associates in this venture:
+Patrick Freeman, Ren Malloy, Mitchell Parrish, Eric Benopee and Daniel Fulham,
+will be joining me in launching a new kind of variety hour.
+One that lasts 24 hours a day in seven days a week.
+Saddle up partner because anything can happen and anyone can stop by!*
 
 ## Lyrics from album cover
 
