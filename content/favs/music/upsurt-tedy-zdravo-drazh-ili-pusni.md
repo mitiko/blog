@@ -3,7 +3,7 @@ title = "Здраво дръж или пусни"
 date = 2023-02-07
 
 [taxonomies]
-artist = ["Ъпсурт", "Теди"]
+artist = ["Upsurt"]
 release-year = ["1999"]
 
 [extra]
