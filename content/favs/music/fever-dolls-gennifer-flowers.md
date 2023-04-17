@@ -17,9 +17,9 @@ My name is Evan Alice and I'm excited to share with you the latest in our ground
 
 *For nearly 20 years entrepreneurs, scientists and visionaries have struggled to understand what changes the new millennium would bring to the ways in which we experience art and consume entertainment.
 One thing's for sure Haas - it's out with the old and in with the new.
-But don't worry old-timer, you can still come along, provided you bring that fresh perspective intel. What's clear is that today's Americans want to be inundated and stimulated like never before.*
+But don't worry old-timer, you can still come along, provided you bring that fresh perspective intel.*
 
-<span class="l1">*No longer will we abide the demarcations of medium or the limits placed on us by such dated concepts as story, and structure, and genre.*</span>
+<span class="l1">*What's clear is that today's Americans want to be inundated and stimulated like never before. No longer will we abide the demarcations of medium or the limits placed on us by such dated concepts as story, and structure, and genre.*</span>
 *After all, what good are comfort and tidiness in a world where the most emotionally devastating conversations can occur when you're holding in a fart or something.
 It's in this spirit that I'm proud to announce our latest venture: Fever Dolls -
 a multimedia varietal experience drawing on the hottest and freshest sounds in modern sensory consumption, all in stereo.*
