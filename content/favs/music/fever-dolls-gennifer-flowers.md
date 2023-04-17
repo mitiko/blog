@@ -28,7 +28,7 @@ a multimedia varietal experience drawing on the hottest and freshest sounds in m
 Patrick Freeman, Ren Malloy, Mitchell Parrish, Eric Benopee and Daniel Fulham,
 will be joining me in launching a new kind of variety hour.
 One that lasts 24 hours a day in seven days a week.
-Saddle up partner because anything can happen and anyone can stop by!*
+Saddle up partner cause anything can happen and anyone can stop by!*
 
 ## Lyrics
 
