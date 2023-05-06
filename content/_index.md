@@ -21,6 +21,7 @@ This site is built with [Zola](https://getzola.org), and hosted on [Cloudlfare P
 [{{ color1(str="~/") }} home](/)
 - [{{ color1(str="~/tech") }} articles](/tech)
   - [{{ color1(str="~/tech/compression") }} making things smol](/tech/compression)
+  - [{{ color1(str="~/tech/gdcc2023") }} competition](/tech/gdcc2023)
 - [{{ color1(str="~/favs") }} dopamine providers](/favs)
   - [{{ color1(str="~/favs/music") }} (lyrics included)](/favs/music)
   - [{{ color1(str="~/favs/movies") }} (rewatched 3+)](/favs/movies)
