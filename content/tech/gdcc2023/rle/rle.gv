@@ -1,0 +1,8 @@
+digraph G {
+    rankdir="LR";
+    Empty -> Raw;
+    Raw -> Raw;
+    Raw -> Run;
+    Run -> Run;
+    Run -> Raw;
+}
