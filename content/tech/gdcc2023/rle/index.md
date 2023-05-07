@@ -1,6 +1,8 @@
 +++
 title = "Run length encoding"
 date = 2023-05-07
+# hash is sha1(f"{date} {title}")[:7]
+aliases = ["/p/1b009b9", "/a/rle"]
 
 [extra]
 math = true
