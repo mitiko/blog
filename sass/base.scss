@@ -9,20 +9,18 @@
 body, html { margin: 0; padding: 0; }
 body { padding-inline: 0.9rem; font-family: sans-serif; }
 main { max-width: 70ch; margin-inline: auto; }
-footer { padding-block: 1rem; }
+footer { max-width: 90ch; margin-inline: auto; padding-block: 1rem; }
+footer > img { margin: 0.5rem; }
 
-$a: 2.4em; $b: 1.8em;
-$font-ratio: $a / $b;
-$c: $b / $font-ratio; // maintain ratio
-h1 { font-size: $a; }
-h2 { font-size: $b; font-weight: 300; } // wow modern
-h3 { font-size: $c; }
+h1 { font-size: 2.4em; }
+h2 { font-size: 1.8em; font-weight: 300; } // wow modern
+h3 { font-size: 1.35em; } // maintain ratio (2.4 / 1.8 = 1.8 / 1.35)
 p { line-height: 1.4; }
 
 header {
     margin-block: 3rem;
-
     & > * { margin-block: 0.8rem; }
+
     & > h2#subtitle { color: var(--t2); }
 
     & > p#date {

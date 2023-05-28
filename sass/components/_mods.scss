@@ -26,3 +26,6 @@ code::selection, #date::selection,
 #word-count > span::selection {
     background-color: var(--c2);
 }
+
+// more readable
+// a:hover { background-color: #ccc; }
