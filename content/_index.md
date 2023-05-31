@@ -5,10 +5,10 @@ title = "mitiko"
 tree = true
 +++
 
-Hi, my name is **Dimitar Rusev** and this is my corner of the internet.
+Hi, this is my corner of the internet.
 
 ```bash
-# online, my moniker is mitiko
+# WIP
 alias mitiko="Dimitar Rusev"
 ```
 
@@ -18,20 +18,20 @@ This site is built with [Zola](https://getzola.org), and hosted on [Cloudlfare P
 
 <nav>
 
-[{{ color1(str="~/") }} home](/)
-- [{{ color1(str="~/tech") }} articles](/tech)
-  - [{{ color1(str="~/tech/compression") }} making things smol](/tech/compression)
-- [{{ color1(str="~/favs") }} dopamine providers](/favs)
-  - [{{ color1(str="~/favs/music") }} (lyrics included)](/favs/music)
-  - [{{ color1(str="~/favs/movies") }} (rewatched 3+)](/favs/movies)
-- [{{ color1(str="~/lore") }} non-ephemeral content](/lore)
+[home](/)
+- [tech articles](/tech)
+  - [compression](/tech/compression)
+- [favs](/favs)
+  - [music](/favs/music)
+  - [movies](/favs/movies)
+- [lore](/lore)
 </nav>
 
 ## About
 
 ### Contact
 
-You can email me <a id="email">obfusctated by js</a>.
+You can email me at <a id="email">email obfusctated by js</a>.
 
 
 <script>
