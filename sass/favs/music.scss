@@ -14,6 +14,7 @@ main span {
     padding: 0.15rem 0.3rem;
     margin-left: -0.3rem; // offset back so text is aligned
     border-radius: 0.2rem;
-    &.l1 { background-color: var(--c2t); }
+    &.l1, &.l2 { background-color: var(--c2t); }
+    &.l2 { border: 1px solid var(--c2); }
     &::selection { background-color: var(--c2); }
 }
