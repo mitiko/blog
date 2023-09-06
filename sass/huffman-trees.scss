@@ -1,0 +1,55 @@
+div {
+    --x: 3rem;
+    width: var(--x);
+    height: var(--x);
+    // border-radius: 50%;
+    // text-align: center;
+    // line-height: var(--r);
+
+    // display: grid;
+    // place-items: center;
+
+    background-color: rgba(90, 0, 90, 0.589);
+    font-size: 0.6em;
+    // border: 1px solid rgba(90, 0, 90, 0.9);
+
+    --top: 1rem;
+    --inline: 10em;
+}
+
+div#root {
+    background-color: red;
+    margin-inline: auto;
+}
+
+div:has(>span.leaf) {
+    display: grid;
+    place-items: center;
+    // border: 1px solid yellow;
+}
+
+// div:not(:has(>span.leaf)) {
+//     position: unset;
+// }
+
+// div > div {
+//     position: relative;
+// }
+
+div > div:nth-child(1) {
+    position: relative;
+    top: calc(var(--x) + var(--top));
+    right: calc((var(--x) / 2) + var(--inline));
+}
+
+div > div:nth-child(2) {
+    position: relative;
+    top: var(--top);
+    left: calc((var(--x) / 2) + var(--inline));
+}
+
+span.leaf {
+    font-size: 1rem;
+    margin: auto;
+    // display: inline-block;
+}
