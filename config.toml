@@ -9,6 +9,7 @@ generate_feed = true
 compile_sass = true
 
 taxonomies = [
+    { name = "tags", feed = true},
     { name = "type", feed = true},
     { name = "artist", feed = true},
     { name = "director", feed = true},
