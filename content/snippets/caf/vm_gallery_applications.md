@@ -1,7 +1,7 @@
 +++
 title = "Config drift fix for VMs' gallery applications"
 date = 2023-11-27
-extra.include_meta = true
+extra.exclude_meta = true
 +++
 
 Paste the following snippet:

@@ -1,7 +1,7 @@
 +++
 title = "Pending private endpoints module refactoring"
 date = 2023-11-27
-extra.include_meta = true
+extra.exclude_meta = true
 +++
 
 Maybe released in 5.8.1
