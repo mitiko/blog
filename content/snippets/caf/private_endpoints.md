@@ -1,5 +1,5 @@
 +++
-title = "Pending private endpoints module refactoring"
+title = "[refactor] Pending private endpoints module refactor"
 date = 2023-11-27
 extra.exclude_meta = true
 +++

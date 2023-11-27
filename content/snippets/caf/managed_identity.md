@@ -1,5 +1,5 @@
 +++
-title = "Managed identity support"
+title = "[add] Managed identities"
 date = 2023-11-27
 extra.exclude_meta = true
 +++

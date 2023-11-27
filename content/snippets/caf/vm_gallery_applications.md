@@ -1,5 +1,5 @@
 +++
-title = "Config drift fix for VMs' gallery applications"
+title = "[config-drift] VM gallery applications"
 date = 2023-11-27
 extra.exclude_meta = true
 +++
