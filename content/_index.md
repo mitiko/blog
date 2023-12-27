@@ -18,13 +18,13 @@ This site is built with [Zola](https://getzola.org), and hosted on [Cloudlfare P
 
 <nav>
 
-[home](/)
-- [tech articles](/tech)
-  - [compression](/tech/compression)
-- [favs](/favs)
-  - [music](/favs/music)
-  - [movies](/favs/movies)
-- [lore](/lore)
+[home](@/_index.md)
+- [tech articles](@/tech/_index.md)
+  - [compression](@/todo/_index.md)
+- [favs](@/favs/_index.md)
+  - [music](@/music/_index.md)
+  - [movies](@/favs/movies/_index.md)
+- [lore](@/lore/_index.md)
 </nav>
 
 ## About
