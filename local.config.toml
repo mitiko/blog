@@ -18,4 +18,4 @@ highlight_code = true
 highlight_theme = "ayu-light"
 
 [extra]
-favicon_url = "/local_favicon.png"
+favicon_url = "/local_favicon.png" # different

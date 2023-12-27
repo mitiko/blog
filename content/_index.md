@@ -1,46 +1,17 @@
 +++
 title = "mitiko"
-
-[extra]
-tree = true
+extra.tree = true
 +++
 
-Hi, this is my corner of the internet.
+Hi, this is my corner of the internet (major WIP).
 
-```bash
-# WIP
-alias mitiko="Dimitar Rusev"
-```
+For now you can browse some [music](@/music/_index.md) I like.
 
-This site is built with [Zola](https://getzola.org), and hosted on [Cloudlfare Pages](https://pages.cloudflare.com/).
-
-## Sitemap
+My insta pages:
 
 <nav>
 
-[home](@/_index.md)
-- [tech articles](@/tech/_index.md)
-  - [compression](@/todo/_index.md)
-- [favs](@/favs/_index.md)
-  - [music](@/music/_index.md)
-  - [movies](@/favs/movies/_index.md)
-- [lore](@/lore/_index.md)
+- [mitiko.x](https://instagram.com/mitiko.x)
+- [mitiko.climbs](https://instagram.com/mitiko.climbs)
+- [mitiko.oats](https://instagram.com/mitiko.oats)
 </nav>
-
-## About
-
-### Contact
-
-You can email me at <a id="email">email obfusctated by js</a>.
-
-
-<script>
-// obfuscate email so it's harder on the web crawlers
-const rot13 = (str) => str.replace(/[a-z]/gi, x => String.fromCharCode(x.charCodeAt(0) + (x.toLowerCase() <= 'm' ? 13 : -13)));
-let obfsName = "zvgvxbqri";
-let addr = rot13(obfsName) + "@" + "gmail.com";
-let emailEl = document.getElementById("email");
-emailEl.innerText = addr;
-emailEl.href = "mailto:" + addr;
-</script>
-
