@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header id="rants">
+  <h1>
+    {{ section.title }}
+  </h1>
+</header>
+
+{% if section.pages | length == 0 %}
+<h2 class="error">Oops, this section has no articles, yet.</h2>
+{% endif %}
+
+{{ section.content | safe }}
+
+{% for page in section.pages %}
+{# TODO: link to full rant? #}
+<h2>{{ page.title }}</h2>
+<p class="date">{{ page.date }}</p>
+{{ page.summary | safe }}
+{% endfor %}
+
+{% endblock content %}
