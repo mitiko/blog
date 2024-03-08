@@ -17,6 +17,14 @@ if __name__ == '__main__':
     assert isinstance(relative_path, str)
 ```
 
+### Reverse string
+
+```py
+a = 'abcdef'
+b = a[::-1]
+assert b == 'fedcba'
+```
+
 ## Jinja
 
 ### Minimal Jinja setup
