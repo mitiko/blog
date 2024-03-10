@@ -40,9 +40,16 @@ patterns = {
         r'csize: (?P<csize>\d+) \(ratio: (?P<ratio>[\d\.]+)\), '
         r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w\.]+) per bit\)$'
     ),
+    # [ordern] [ctx:  8 align: 0] csize: 508907 (ratio: 0.662), ctime: 106.565458ms (17ns per bit)
+    'ordern': re.compile(
+        r'^\[ordern\] '
+        r'\[ctx:\s+(?P<ctx>\d+) align:\s+(?P<align>\d+)\] '
+        r'csize: (?P<csize>\d+) \(ratio: (?P<ratio>[\d\.]+)\), '
+        r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w\.]+) per bit\)$'
+    ),
 }
 
-algs = ['ac-over-huff', 'eh-ac', 'eh-huff']
+algs = ['ac-over-huff', 'eh-ac', 'eh-huff', 'ordern']
 parse_funcs = {
     alg: {
         'ctx': int,
@@ -55,6 +62,8 @@ parse_funcs = {
 }
 parse_funcs['ac-over-huff'].update({'hsize': int})
 parse_funcs['eh-ac'].update({'align': int})
+parse_funcs['eh-huff'].update({'rem_hsize': int, 'hsize': int})
+parse_funcs['ordern'].update({'align': int})
 
 print('Reading logs...')
 for alg in algs:
@@ -71,9 +80,11 @@ for alg in algs:
 x1 = [x for x in data if x['alg'] == algs[0]][0]
 x2 = [x for x in data if x['alg'] == algs[1]][0]
 x3 = [x for x in data if x['alg'] == algs[2]][0]
+x4 = [x for x in data if x['alg'] == algs[3]][0]
 print(x1)
 print(x2)
 print(x3)
+print(x4)
 
 print('Plotting...')
 
