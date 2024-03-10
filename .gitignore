@@ -1,6 +1,7 @@
 public/
 TODO
 .DS_Store
+.venv
 
 # Temporary
 *.jpg
