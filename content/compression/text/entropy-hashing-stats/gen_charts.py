@@ -94,12 +94,31 @@ for alg in algs:
     xdata = list({x['ctx'] for x in d})
     xdata.sort()
     ydata = [min([x['csize'] for x in d if x['ctx'] == ctx]) for ctx in xdata]
-    plt.plot(xdata, ydata, label=alg)
+    plt.plot(xdata, ydata, label=alg, marker='o', markersize=2)
 
-# plt.show()
-# xpoints = range(10)
-# ypoints = [x**4 for x in xpoints]
+plt.legend(loc='upper right')
+plt.xlabel('ctx size (in bits)')
+plt.ylabel('csize')
+plt.savefig('ctx_vs_csize.png', dpi=300)
+plt.close()
 
-# plt.plot(xpoints, ypoints)
-plt.savefig('foo.png')
+# plot ratio vs ctime
+for alg in algs:
+    d = [x for x in data if x['alg'] == alg]
+    ctxs = list({x['ctx'] for x in d})
+    ctxs.sort()
+    xdata = [min([x['ratio'] for x in d if x['ctx'] == ctx]) for ctx in ctxs]
+    xdata.sort()
+    ydata = [min([x['ctime'] for x in d if x['ratio'] == ratio]) for ratio in xdata]
+    plt.plot(xdata, ydata, label=alg, marker='o', markersize=2)
+    # plt.plot(xdata, ydata, label=alg)
+
+plt.yscale('log')
+plt.gca().invert_xaxis()
+plt.legend(loc='upper left')
+plt.xlabel('ratio')
+plt.ylabel('ctime (in ns)')
+plt.savefig('ratio_vs_ctime.png', dpi=300)
+plt.close()
+
 print('Done')
