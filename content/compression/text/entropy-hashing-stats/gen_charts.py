@@ -9,10 +9,12 @@ data = []
 def parse_nanos(s: str):
     if s.endswith('ns'):
         return float(s[:-2])
-    if s.endswith('ms'):
+    if s.endswith('µs'):
         return float(s[:-2]) * 1_000
+    if s.endswith('ms'):
+        return float(s[:-2]) * 1_000_000
     if s.endswith('s'):
-        return float(s[:-1]) * 1_000_000
+        return float(s[:-1]) * 1_000_000_000
     raise Exception('Unknown time unit')
 
 
