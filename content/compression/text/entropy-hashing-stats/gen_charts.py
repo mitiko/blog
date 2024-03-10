@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import matplotlib.pyplot as plt
 
 data = []
 
@@ -53,6 +54,7 @@ parse_funcs = {
 parse_funcs['ac-over-huff'].update({'hsize': int})
 parse_funcs['eh-ac'].update({'align': int})
 
+print('Reading logs...')
 for alg in algs:
     for line in open(f'{alg}.book1.log').read().split('\n'):
         x = patterns[alg].match(line)
@@ -70,3 +72,21 @@ x3 = [x for x in data if x['alg'] == algs[2]][0]
 print(x1)
 print(x2)
 print(x3)
+
+print('Plotting...')
+
+# plot ctx vs csize
+for alg in algs:
+    d = [x for x in data if x['alg'] == alg]
+    xdata = list({x['ctx'] for x in d})
+    xdata.sort()
+    ydata = [min([x['csize'] for x in d if x['ctx'] == ctx]) for ctx in xdata]
+    plt.plot(xdata, ydata, label=alg)
+
+# plt.show()
+# xpoints = range(10)
+# ypoints = [x**4 for x in xpoints]
+
+# plt.plot(xpoints, ypoints)
+plt.savefig('foo.png')
+print('Done')
