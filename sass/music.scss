@@ -1,0 +1,20 @@
+header > h2#artist {
+    color: var(--c1);
+
+    & > span#featuring {
+        color: var(--t2);
+        font-size: 0.7em;
+        white-space: nowrap;
+    }
+}
+
+p { margin-block: 0; }
+main span {
+    display: inline-block;
+    padding: 0.15rem 0.3rem;
+    margin-left: -0.3rem; // offset back so text is aligned
+    border-radius: 0.2rem;
+    &.l1, &.l2 { background-color: var(--c2t); }
+    &.l2 { border: 1px solid var(--c2); }
+    &::selection { background-color: var(--c2); }
+}

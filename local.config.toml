@@ -4,6 +4,7 @@ build_search_index = false # different
 
 minify_html = true
 generate_feed = true
+compile_sass = true
 
 taxonomies = [
     { name = "type", feed = true},
@@ -17,4 +18,4 @@ highlight_code = true
 highlight_theme = "ayu-light"
 
 [extra]
-favicon_url = "/local_favicon.png"
+favicon_url = "/local_favicon.png" # different

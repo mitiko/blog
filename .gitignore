@@ -1,8 +1,6 @@
 public/
 TODO
+.DS_Store
 
 # Temporary
 *.jpg
-
-# Local Netlify folder
-.netlify

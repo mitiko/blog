@@ -1,0 +1,28 @@
+span.last-word {
+    color: var(--c1);
+    & > span.undo { color: var(--t1); }
+}
+
+#sources + ul {
+    color: var(--t2);
+    font-style: italic;
+    word-wrap: break-word;
+}
+
+strong { font-weight: 600; }
+.error { color: hsl(0, 100%, 70%); }
+.color1 { color: var(--c1); }
+.color2 { color: var(--c2); }
+
+::marker { color: var(--c1); }
+::selection {
+    background-color: var(--c1);
+    color: #fff;
+
+    pre &, details & { background-color: var(--c2); }
+}
+code::selection, #date::selection,
+#read-time > span::selection,
+#word-count > span::selection {
+    background-color: var(--c2);
+}

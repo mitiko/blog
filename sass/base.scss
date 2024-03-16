@@ -1,0 +1,58 @@
+:root {
+    --t1: rgb(30, 30, 30);
+    --t2: rgb(75, 75, 75);
+    --c1: hsl(177, 100%, 28%);
+    --c2: hsl(283, 81%, 43%);
+    --c2t: hsla(283, 81%, 43%, 0.15); // transparent
+}
+
+body, html { margin: 0; padding: 0; }
+body { padding-inline: 0.9rem; font-family: sans-serif; }
+main { max-width: 70ch; margin-inline: auto; }
+footer { padding-block: 1rem; }
+
+$a: 2.4em; $b: 1.8em;
+$font-ratio: $a / $b;
+$c: $b / $font-ratio; // maintain ratio
+h1 { font-size: $a; }
+h2 { font-size: $b; font-weight: 300; } // wow modern
+h3 { font-size: $c; }
+p { line-height: 1.4; }
+
+header {
+    margin-block: 3rem;
+
+    & > * { margin-block: 0.8rem; }
+    & > h2#subtitle { color: var(--t2); }
+
+    & > p#date {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: var(--c1);
+    }
+
+    & span#read-time, & span#word-count {
+        margin-block: 0.5rem;
+
+        & > span.value {
+            color: var(--c2);
+            font-weight: 600;
+        }
+    }
+}
+
+blockquote {
+    border-inline-start: 3px solid var(--c1);
+    border-radius: 5px;
+    padding-inline: 0.6rem;
+    margin-inline: 0.4rem; // total is 1.0rem
+
+    & > p { color: var(--t2); }
+}
+
+table td, table th {
+    border: 1px solid #000;
+    padding: 0.4rem;
+}
+
+@import 'components/_nav', 'components/_images', 'components/_code_blocks', 'components/_details', 'components/_mods';

@@ -1,11 +1,10 @@
-# The URL the site will be built for
-# base_url = "https://mitikox.top"
 base_url = "/"
 
 build_search_index = true
 
 minify_html = true
 generate_feed = true
+compile_sass = true
 
 taxonomies = [
     { name = "type", feed = true},
