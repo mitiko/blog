@@ -6,7 +6,7 @@
     --c2t: hsla(283, 81%, 43%, 0.15); // transparent
 }
 
-body, html { margin: 0; padding: 0; }
+body, html { margin: 0; padding: 0; color: rgb(27, 27, 27) }
 body { padding-inline: 0.9rem; font-family: sans-serif; }
 main { max-width: 70ch; margin-inline: auto; }
 footer { padding-block: 1rem; }
@@ -48,6 +48,22 @@ blockquote {
     margin-inline: 0.4rem; // total is 1.0rem
 
     & > p { color: var(--t2); }
+
+    &.note {
+        margin-inline: 0;
+        border-radius: 3px;
+        padding-block: 0.8rem;
+        background-color: rgba(0,133,242,0.1);
+        border-color: rgb(0, 133, 242);
+    }
+
+    &.warning {
+        margin-inline: 0;
+        border-radius: 3px;
+        padding-block: 0.8rem;
+        background-color: rgba(242, 202, 0, 0.1);
+        border-color: rgb(242, 202, 0);
+    }
 }
 
 table td, table th {
