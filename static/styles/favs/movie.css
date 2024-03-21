@@ -1,5 +1,4 @@
 /* Movie CSS */
-details { margin-inline-start: 0.8rem; }
 main { font-family: 'Courier New', Courier, monospace; }
 header, details { font-family: var(--f); }
 
