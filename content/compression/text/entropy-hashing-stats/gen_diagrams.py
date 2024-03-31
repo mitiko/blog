@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 
+import os
 import re
-import matplotlib.pyplot as plt
-from shutil import which
 import subprocess
+from shutil import which
+import matplotlib.pyplot as plt
 
+if __name__ != '__main__':
+    print('This is a script, do not import')
+    exit(1)
+
+__directory = os.path.dirname(__file__)
 data = []
 
 
@@ -62,7 +68,13 @@ patterns = {
     ),
 }
 
-algs = ['ac-over-huff', 'eh-ac', 'eh-ac-cached', 'eh-huff', 'ordern']
+algs = [
+    'ac-over-huff',
+    'eh-ac',
+    'eh-ac-cached',
+    'eh-huff',
+    'ordern',
+]
 parse_funcs = {
     alg: {
         'ctx': int,
@@ -85,7 +97,7 @@ for alg in algs:
 
 print('Reading logs...')
 for alg in algs:
-    for line in open(f'{alg}.book1.log').read().split('\n'):
+    for line in open(os.path.join(__directory, f'logs/{alg}.book1.log')).read().split('\n'):
         x = patterns[alg].match(line)
         if x is None:
             continue
@@ -99,7 +111,9 @@ for alg in algs:
 #     entry = [x for x in data if x['alg'] == alg][0]
 #     print(entry)
 print('Plotting...')
-subprocess.run(['mkdir', '-p', 'diagrams'])
+diagrams_directory = os.path.join(__directory, 'diagrams')
+if not os.path.exists(diagrams_directory):
+    os.makedirs(diagrams_directory)
 
 print('-> diagrams/ctx_vs_csize.png')
 # plot ctx vs csize
@@ -116,7 +130,7 @@ for alg in algs:
 plt.legend(loc='upper right')
 plt.xlabel('ctx size (in bits)')
 plt.ylabel('csize')
-plt.savefig('diagrams/ctx_vs_csize.png', dpi=300)
+plt.savefig(os.path.join(diagrams_directory, 'ctx_vs_csize.png'), dpi=300)
 plt.close()
 
 print('-> diagrams/ratio_vs_ctime_all.png')
@@ -141,7 +155,7 @@ plt.gca().invert_xaxis()
 plt.legend(loc='upper left')
 plt.xlabel('ratio')
 plt.ylabel('ctime (in seconds)')
-plt.savefig('diagrams/ratio_vs_ctime_all.png', dpi=300)
+plt.savefig(os.path.join(diagrams_directory, 'ratio_vs_ctime_all.png'), dpi=300)
 plt.close()
 
 print('-> diagrams/ratio_vs_ctime.png')
@@ -164,7 +178,7 @@ plt.gca().invert_xaxis()
 plt.legend(loc='lower left')
 plt.xlabel('ratio')
 plt.ylabel('ctime (in seconds)')
-plt.savefig('diagrams/ratio_vs_ctime.png', dpi=300)
+plt.savefig(os.path.join(diagrams_directory, 'ratio_vs_ctime.png'), dpi=300)
 plt.close()
 
 print('-> diagrams/ratio_vs_ctime_eh_ac.png')
@@ -187,7 +201,7 @@ plt.gca().invert_xaxis()
 plt.legend(loc='upper left')
 plt.xlabel('ratio')
 plt.ylabel('ctime (in seconds)')
-plt.savefig('diagrams/ratio_vs_ctime_eh_ac.png', dpi=300)
+plt.savefig(os.path.join(diagrams_directory, 'ratio_vs_ctime_eh_ac.png'), dpi=300)
 plt.close()
 
 # TODO: optimize images globally
@@ -207,10 +221,10 @@ if which('pngquant') is None:
     exit(1)
 
 for image in [
-    'diagrams/ctx_vs_csize.png',
-    'diagrams/ratio_vs_ctime_all.png',
-    'diagrams/ratio_vs_ctime.png',
-    'diagrams/ratio_vs_ctime_eh_ac.png',
+    'ctx_vs_csize.png',
+    'ratio_vs_ctime_all.png',
+    'ratio_vs_ctime.png',
+    'ratio_vs_ctime_eh_ac.png',
 ]:
     optimization_params = [
         '-s1',  # slowest
@@ -218,7 +232,13 @@ for image in [
         '--posterize',  # output lower-precision color
         '4',  # posterize 4 bits
     ]
-    file_params = ['--skip-if-larger', '--force', '--ext=.png', '--', image]
+    file_params = [
+        '--skip-if-larger',
+        '--force',
+        '--ext=.png',
+        '--',
+        os.path.join(diagrams_directory, image),
+    ]
     subprocess.run(['pngquant'] + optimization_params + file_params)
 
 print('Done')
