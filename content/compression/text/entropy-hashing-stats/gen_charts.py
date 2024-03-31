@@ -2,6 +2,8 @@
 
 import re
 import matplotlib.pyplot as plt
+from shutil import which
+import subprocess
 
 data = []
 
@@ -97,7 +99,9 @@ for alg in algs:
 #     entry = [x for x in data if x['alg'] == alg][0]
 #     print(entry)
 print('Plotting...')
+subprocess.run(['mkdir', '-p', 'diagrams'])
 
+print('-> diagrams/ctx_vs_csize.png')
 # plot ctx vs csize
 for alg in algs:
     if alg == 'eh-ac-cached':
@@ -115,6 +119,7 @@ plt.ylabel('csize')
 plt.savefig('diagrams/ctx_vs_csize.png', dpi=300)
 plt.close()
 
+print('-> diagrams/ratio_vs_ctime_all.png')
 # plot ratio vs ctime (all)
 for alg in algs:
     if alg == 'eh-ac-cached':
@@ -139,6 +144,7 @@ plt.ylabel('ctime (in seconds)')
 plt.savefig('diagrams/ratio_vs_ctime_all.png', dpi=300)
 plt.close()
 
+print('-> diagrams/ratio_vs_ctime.png')
 # plot ratio vs ctime
 for alg in algs:
     if alg.startswith('eh-ac'):
@@ -161,6 +167,7 @@ plt.ylabel('ctime (in seconds)')
 plt.savefig('diagrams/ratio_vs_ctime.png', dpi=300)
 plt.close()
 
+print('-> diagrams/ratio_vs_ctime_eh_ac.png')
 # plot ratio vs ctime (eh-ac)
 for alg in algs:
     if not alg.startswith('eh-ac'):
@@ -182,5 +189,36 @@ plt.xlabel('ratio')
 plt.ylabel('ctime (in seconds)')
 plt.savefig('diagrams/ratio_vs_ctime_eh_ac.png', dpi=300)
 plt.close()
+
+# TODO: optimize images globally
+optimize = True
+if not optimize:
+    print('Skipping image optimization.')
+    print('Done')
+    exit(0)
+
+print('Optimizing...')
+
+if which('pngquant') is None:
+    print('`pngquant` not found. You can install it from https://pngquant.org/#download')
+    print('MacOS: brew install pngquant')
+    print('Rust: cargo install pngquant')
+    print('Ubuntu: sudo apt install pngquant')
+    exit(1)
+
+for image in [
+    'diagrams/ctx_vs_csize.png',
+    'diagrams/ratio_vs_ctime_all.png',
+    'diagrams/ratio_vs_ctime.png',
+    'diagrams/ratio_vs_ctime_eh_ac.png',
+]:
+    optimization_params = [
+        '-s1',  # slowest
+        '--nofs',  # diable Floyd-Steinberg dithering
+        '--posterize',  # output lower-precision color
+        '4',  # posterize 4 bits
+    ]
+    file_params = ['--skip-if-larger', '--force', '--ext=.png', '--', image]
+    subprocess.run(['pngquant'] + optimization_params + file_params)
 
 print('Done')
