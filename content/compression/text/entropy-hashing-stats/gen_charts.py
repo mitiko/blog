@@ -19,10 +19,10 @@ def parse_nanos(s: str):
 
 
 patterns = {
-    # [ac-over-huff] [hsize:  7 ctx: 11 align: 0] csize: 388436 (ratio: 0.505), ctime: 54.287041ms (9ns per bit)
+    # [ac-over-huff] [hsize:  7, ctx: 11, align: 0] csize: 388436 (ratio: 0.505), ctime: 54.287041ms (9ns per bit)
     'ac-over-huff': re.compile(
         r'^\[ac-over-huff\] '
-        r'\[hsize:\s+(?P<hsize>\d+) ctx:\s+(?P<ctx>\d+) align: 0\] '
+        r'\[hsize:\s+(?P<hsize>\d+), ctx:\s+(?P<ctx>\d+), align: 0\] '
         r'csize: (?P<csize>\d+) \(ratio: (?P<ratio>[\d\.]+)\), '
         r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w]+) per bit\)$'
     ),
@@ -33,6 +33,13 @@ patterns = {
         r'csize: (?P<csize>\d+) \(ratio (?P<ratio>[\d\.]+)\), '
         r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w\.]+) per bit\)$'
     ),
+    # [eh-ac] [ctx:  8, align: 0, cache: 12] csize: 687637 (ratio 0.894), ctime: 730.138291ms (119ns per bit)
+    'eh-ac-cached': re.compile(
+        r'^\[eh-ac\] '
+        r'\[ctx:\s+(?P<ctx>\d+), align:\s+(?P<align>\d+), cache:\s+(?P<cache>\d+)\] '
+        r'csize: (?P<csize>\d+) \(ratio (?P<ratio>[\d\.]+)\), '
+        r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w\.]+) per bit\)$'
+    ),
     # [eh-huff] [rem_hsize:  7, hsize:  7, ctx:  8] csize: 414561 (ratio: 0.539), ctime: 118.488417ms (19ns per bit)
     'eh-huff': re.compile(
         r'^\[eh-huff\] '
@@ -40,16 +47,16 @@ patterns = {
         r'csize: (?P<csize>\d+) \(ratio: (?P<ratio>[\d\.]+)\), '
         r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w\.]+) per bit\)$'
     ),
-    # [ordern] [ctx:  8 align: 0] csize: 508907 (ratio: 0.662), ctime: 106.565458ms (17ns per bit)
+    # [ordern] [ctx:  8, align: 0] csize: 508907 (ratio: 0.662), ctime: 106.565458ms (17ns per bit)
     'ordern': re.compile(
         r'^\[ordern\] '
-        r'\[ctx:\s+(?P<ctx>\d+) align:\s+(?P<align>\d+)\] '
+        r'\[ctx:\s+(?P<ctx>\d+), align:\s+(?P<align>\d+)\] '
         r'csize: (?P<csize>\d+) \(ratio: (?P<ratio>[\d\.]+)\), '
         r'ctime: (?P<ctime>[\w\.]+) \((?P<btime>[\w\.]+) per bit\)$'
     ),
 }
 
-algs = ['ac-over-huff', 'eh-ac', 'eh-huff', 'ordern']
+algs = ['ac-over-huff', 'eh-ac', 'eh-ac-cached', 'eh-huff', 'ordern']
 parse_funcs = {
     alg: {
         'ctx': int,
@@ -60,10 +67,15 @@ parse_funcs = {
     }
     for alg in algs
 }
-parse_funcs['ac-over-huff'].update({'hsize': int})
-parse_funcs['eh-ac'].update({'align': int})
-parse_funcs['eh-huff'].update({'rem_hsize': int, 'hsize': int})
-parse_funcs['ordern'].update({'align': int})
+params = {
+    'ac-over-huff': {'hsize': int},
+    'eh-ac': {'align': int},
+    'eh-ac-cached': {'align': int, 'cache': int},
+    'eh-huff': {'rem_hsize': int, 'hsize': int},
+    'ordern': {'align': int},
+}
+for alg in algs:
+    parse_funcs.update(params[alg])
 
 print('Reading logs...')
 for alg in algs:
@@ -90,6 +102,8 @@ print('Plotting...')
 
 # plot ctx vs csize
 for alg in algs:
+    if alg == 'eh-ac-cached':
+        continue
     d = [x for x in data if x['alg'] == alg]
     xdata = list({x['ctx'] for x in d})
     xdata.sort()
@@ -102,6 +116,7 @@ plt.ylabel('csize')
 plt.savefig('ctx_vs_csize.png', dpi=300)
 plt.close()
 
+# TODO: fix
 # plot ratio vs ctime
 for alg in algs:
     d = [x for x in data if x['alg'] == alg]
