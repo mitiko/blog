@@ -18,6 +18,10 @@ def parse_nanos(s: str):
     raise Exception('Unknown time unit')
 
 
+def nanos_to_sec(time_in_nanos: int):
+    return time_in_nanos / 1_000_000_000
+
+
 patterns = {
     # [ac-over-huff] [hsize:  7, ctx: 11, align: 0] csize: 388436 (ratio: 0.505), ctime: 54.287041ms (9ns per bit)
     'ac-over-huff': re.compile(
@@ -75,7 +79,7 @@ params = {
     'ordern': {'align': int},
 }
 for alg in algs:
-    parse_funcs.update(params[alg])
+    parse_funcs[alg].update(params[alg])
 
 print('Reading logs...')
 for alg in algs:
@@ -89,20 +93,15 @@ for alg in algs:
         obj['alg'] = alg
         data.append(obj)
 
-x1 = [x for x in data if x['alg'] == algs[0]][0]
-x2 = [x for x in data if x['alg'] == algs[1]][0]
-x3 = [x for x in data if x['alg'] == algs[2]][0]
-x4 = [x for x in data if x['alg'] == algs[3]][0]
-print(x1)
-print(x2)
-print(x3)
-print(x4)
-
+# for alg in algs:
+#     entry = [x for x in data if x['alg'] == alg][0]
+#     print(entry)
 print('Plotting...')
 
 # plot ctx vs csize
 for alg in algs:
     if alg == 'eh-ac-cached':
+        # skip cached eh-ac, as it's the same ctx/csize ratio
         continue
     d = [x for x in data if x['alg'] == alg]
     xdata = list({x['ctx'] for x in d})
@@ -113,27 +112,75 @@ for alg in algs:
 plt.legend(loc='upper right')
 plt.xlabel('ctx size (in bits)')
 plt.ylabel('csize')
-plt.savefig('ctx_vs_csize.png', dpi=300)
+plt.savefig('diagrams/ctx_vs_csize.png', dpi=300)
 plt.close()
 
-# TODO: fix
-# plot ratio vs ctime
+# plot ratio vs ctime (all)
 for alg in algs:
+    if alg == 'eh-ac-cached':
+        # makes sense to compare with eh-ac only
+        continue
     d = [x for x in data if x['alg'] == alg]
-    ctxs = list({x['ctx'] for x in d})
-    ctxs.sort()
-    xdata = [min([x['ratio'] for x in d if x['ctx'] == ctx]) for ctx in ctxs]
-    xdata.sort()
-    ydata = [min([x['ctime'] for x in d if x['ratio'] == ratio]) for ratio in xdata]
+    xdata, ydata = [], []
+    for ratio in [x / 100 for x in range(0, 70)]:
+        under_ratio = [x for x in d if x['ratio'] <= ratio]
+        if len(under_ratio) == 0:
+            continue
+        xdata.append(min(under_ratio, key=lambda x: ['ctime'])['ratio'])
+        ydata.append(nanos_to_sec(min(under_ratio, key=lambda x: ['ctime'])['ctime']))
+
     plt.plot(xdata, ydata, label=alg, marker='o', markersize=2)
-    # plt.plot(xdata, ydata, label=alg)
 
 plt.yscale('log')
 plt.gca().invert_xaxis()
 plt.legend(loc='upper left')
 plt.xlabel('ratio')
-plt.ylabel('ctime (in ns)')
-plt.savefig('ratio_vs_ctime.png', dpi=300)
+plt.ylabel('ctime (in seconds)')
+plt.savefig('diagrams/ratio_vs_ctime_all.png', dpi=300)
+plt.close()
+
+# plot ratio vs ctime
+for alg in algs:
+    if alg.startswith('eh-ac'):
+        continue
+    xdata, ydata = [], []
+    d = [x for x in data if x['alg'] == alg]
+    for ratio in [x / 100 for x in range(0, 100)]:
+        under_ratio = [x for x in d if x['ratio'] <= ratio]
+        if len(under_ratio) == 0:
+            continue
+        xdata.append(min(under_ratio, key=lambda x: ['ctime'])['ratio'])
+        ydata.append(nanos_to_sec(min(under_ratio, key=lambda x: ['ctime'])['ctime']))
+
+    plt.plot(xdata, ydata, label=alg, marker='o', markersize=2)
+
+plt.gca().invert_xaxis()
+plt.legend(loc='lower left')
+plt.xlabel('ratio')
+plt.ylabel('ctime (in seconds)')
+plt.savefig('diagrams/ratio_vs_ctime.png', dpi=300)
+plt.close()
+
+# plot ratio vs ctime (eh-ac)
+for alg in algs:
+    if not alg.startswith('eh-ac'):
+        continue
+    xdata, ydata = [], []
+    d = [x for x in data if x['alg'] == alg]
+    for ratio in [x / 100 for x in range(0, 70)]:
+        under_ratio = [x for x in d if x['ratio'] <= ratio]
+        if len(under_ratio) == 0:
+            continue
+        xdata.append(min(under_ratio, key=lambda x: ['ctime'])['ratio'])
+        ydata.append(nanos_to_sec(min(under_ratio, key=lambda x: ['ctime'])['ctime']))
+
+    plt.plot(xdata, ydata, label=alg, marker='o', markersize=2)
+
+plt.gca().invert_xaxis()
+plt.legend(loc='upper left')
+plt.xlabel('ratio')
+plt.ylabel('ctime (in seconds)')
+plt.savefig('diagrams/ratio_vs_ctime_eh_ac.png', dpi=300)
 plt.close()
 
 print('Done')
