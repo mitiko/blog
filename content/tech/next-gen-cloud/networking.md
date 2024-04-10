@@ -19,3 +19,4 @@ Networking resources:
 - Big Firewall?
   - full-fledged FW solution
 - DHCP?
+- load balancer

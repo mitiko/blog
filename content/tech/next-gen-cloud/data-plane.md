@@ -57,3 +57,6 @@ Resources:
 - Database
   - minimal options postgres
   - minimal options SQLite
+- GPU
+  - rent a tinybox (costs per hour)
+    - easy return on investment
