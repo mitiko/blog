@@ -13,6 +13,17 @@
     {% endif %}
 {% endmacro highlight_last_word %}
 
+{% macro highlight_first_word(string) %}
+    {% set words = string | trim | split(pat=" ") %}
+    {% set first_word = words | first %}
+    {% set remaining_words = words | slice(start=1) | join(sep=" ") %}
+
+    <span class="first-word">
+        {% for l in first_word %}{% if l=='(' or l==')' or l=='"' or l=='.' %}<span class="undo">{{l}}</span>{% else %}{{l}}{% endif %}{% endfor %}
+    </span>
+    {{ remaining_words }}
+{% endmacro highlight_first_word %}
+
 {% macro inline_css(path) %}
     {% set css = load_data(path=path) %}
     <style>{{ css | safe }}</style>

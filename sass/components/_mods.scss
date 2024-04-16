@@ -1,4 +1,4 @@
-span.last-word {
+span.last-word, span.first-word {
     color: var(--c1);
     & > span.undo { color: var(--t1); }
 }
