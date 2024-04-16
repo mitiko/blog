@@ -10,19 +10,14 @@ extra.exclude_meta = true
 
 ```py
 import os
-
-if __name__ == '__main__':
-    __directory = os.path.dirname(__file__)
-    relative_path = os.path.join(__directory, '../parent/../../grandparent')
-    assert isinstance(relative_path, str)
+__directory = os.path.dirname(__file__)
+os.path.join(__directory, '../')
 ```
 
 ### Reverse string
 
 ```py
-a = 'abcdef'
-b = a[::-1]
-assert b == 'fedcba'
+rev = 'abcdef'[::-1]
 ```
 
 ## Jinja
