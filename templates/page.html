@@ -14,7 +14,9 @@
   {% if page.extra.subtitle %}
     <h2 id="subtitle">{{ page.extra.subtitle }}</h2>
   {% endif %}
-  <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
+  {% if not page.extra.exclude_date %}
+    <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
+  {% endif %}
   {% if not page.extra.exclude_meta %}
     <p>
       <span id="read-time">read-time: <span class="value">{{ page.reading_time }} mins</span></span> |
