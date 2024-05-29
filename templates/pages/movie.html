@@ -1,7 +1,24 @@
-{% extends "pages/favs/base.html" %}
+{% extends "base.html" %}
 
 {% block subsection_inline_css %}
-  {{ macros::inline_css(path="/styles/favs/movie.css") }}
+<style>
+/* Base */
+header > h2 { color: var(--c1); }
+header > h2 > span { font-size: 0.7em; color: var(--t2); white-space: nowrap; }
+
+p.timeframe { color: var(--t2); font-size: 0.9em; font-weight: 600; margin-block-start: -0.4rem; }
+
+/* Movie */
+details { margin-inline-start: 0.8rem; }
+main { font-family: 'Courier New', Courier, monospace; }
+header, details { font-family: var(--f); }
+
+details > p > span.acted-by,
+details > p > span.quote-by { white-space: nowrap; }
+
+p.dialog { margin-inline: max(2rem, 100% - 60ch); }
+span.character { font-weight: 601; display: block; text-align: center; }
+</style>
 {% endblock subsection_inline_css %}
 
 {% block content %}

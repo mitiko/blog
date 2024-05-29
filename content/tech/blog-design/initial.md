@@ -56,7 +56,7 @@ Whatever's not in there, I can usually find in the Tera docs - the templating en
 
 I was hesitant to upload anything at first, because.. none of it is ready.  
 But another important realization I had was that I'd never be quite happy with my blog -
-it would remain being a WIP for a long time, never finished - [like fashion](@/favs/movies/the-social-network-fashion.md).
+it would remain being a WIP for a long time, never finished - [like fashion](@/movies/the-social-network-fashion.md).
 
 <!-- TODO: Add an archive link to my first php script -->
 Choosing a hosting platform is another one of those choices that you have to do.
