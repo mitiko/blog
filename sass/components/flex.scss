@@ -1,0 +1,13 @@
+div.flex2-auto {
+    display: grid;
+    grid-template-columns: auto auto;
+
+    &.debug {
+        border: 1px solid red;
+        margin: 3px;
+        & > div { margin: 3px; }
+        & > div.left { border: 1px solid blue; }
+        & > div.right { border: 1px solid green; }
+    }
+
+}
