@@ -10,8 +10,9 @@ extra.exclude_meta = true
 
 ```py
 import os
-__directory = os.path.dirname(__file__)
-os.path.join(__directory, '../')
+
+def r(relative_path: str):
+    return os.path.join(os.path.dirname(__file__), relative_path)
 ```
 
 ### Reverse string
