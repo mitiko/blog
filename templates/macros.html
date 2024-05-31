@@ -28,3 +28,13 @@
     {% set css = load_data(path=path) %}
     <style>{{ css | safe }}</style>
 {% endmacro inline_css %}
+
+{# the zola default is bg. #}
+{# the default is en. if bg & en exist, the default is bg. #}
+{% macro lang(lang, translations) %}
+    {% if translations | length == 1 %}
+    en
+    {% else %}
+    {{ lang }}
+    {% endif %}
+{% endmacro inline_css %}

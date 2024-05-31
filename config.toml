@@ -1,4 +1,5 @@
 base_url = "/"
+default_language = "bg"
 
 build_search_index = true
 
@@ -13,6 +14,9 @@ taxonomies = [
     { name = "director", feed = true},
     { name = "release-year", feed = true},
 ]
+
+[languages.en]
+generate_feed = true
 
 [markdown]
 highlight_code = true
