@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+
+import toml
+import os
+
+def r(relative_path: str):
+    return os.path.join(os.path.dirname(__file__), relative_path)
+
+config = toml.loads(open(r('config.toml')).read())
+
+config['extra']['favicon_url'] = '/local_favicon.png'
+config['build_search_index'] = False
+
+if not os.path.exists('/tmp/blog'):
+    os.mkdir('/tmp/blog')
+open('/tmp/blog/config.toml', 'w').write(toml.dumps(config))
+
+os.system('zola --config /tmp/blog/config.toml serve --drafts -i 0.0.0.0')
