@@ -1,8 +1,8 @@
 {% import "macros.html" as macros %}
 {% if page.lang %}
-    {% set lang = macros::lang(lang=page.lang, translations=page.translations) | trim %}
+    {% set lang = macros::lang(translations=page.translations, lang=page.lang, lang_override=section.extra.lang | default(value=0)) | trim %}
 {% elif section.lang %}
-    {% set lang = macros::lang(lang=section.lang, translations=section.translations) | trim %}
+    {% set lang = macros::lang(lang=section.lang, translations=section.translations, lang_override=section.extra.lang | default(value=0)) | trim %}
 {% else %}
     idk
 {% endif %}

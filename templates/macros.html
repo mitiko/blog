@@ -29,12 +29,16 @@
     <style>{{ css | safe }}</style>
 {% endmacro inline_css %}
 
-{# the zola default is bg. #}
-{# the default is en. if bg & en exist, the default is bg. #}
-{% macro lang(lang, translations) %}
-    {% if translations | length == 1 %}
-    en
+{# we choose bg if explicitly defined, if there are translations bg is the default, and otherwise it's en #}
+{# the zola default is bg #}
+{% macro lang(translations, lang, lang_override=0) %}
+    {% if lang_override != 0 %}
+        over-{{ lang_override }}
     {% else %}
-    {{ lang }}
+        {% if translations | length == 1 %}
+            en
+        {% else %}
+            {{ lang }}
+        {% endif %}
     {% endif %}
 {% endmacro inline_css %}
