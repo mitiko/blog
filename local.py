@@ -9,7 +9,6 @@ def r(relative_path: str):
 config = toml.loads(open(r('config.toml')).read())
 
 config['extra']['favicon_url'] = '/local_favicon.png'
-config['build_search_index'] = False
 
 if not os.path.exists('/tmp/blog'):
     os.mkdir('/tmp/blog')

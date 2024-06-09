@@ -1,8 +1,6 @@
 base_url = "/"
 default_language = "bg"
 
-build_search_index = true
-
 minify_html = true
 generate_feed = true
 compile_sass = true
