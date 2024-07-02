@@ -42,9 +42,8 @@ header {
 }
 
 blockquote {
-    border-inline-start: 3px solid var(--c1);
-    border-radius: 5px;
-    padding-inline: 0.6rem;
+    border-inline-start: 5px solid var(--c1);
+    padding-inline: 0.5rem;
     margin-inline: 0.4rem; // total is 1.0rem
 
     & > p { color: var(--t2); }
