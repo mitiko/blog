@@ -1,2 +1,29 @@
 header > h1#title { text-align: center; }
 nav { font-size: 1rem; }
+
+section#cover {
+    // debug
+    border: 1px solid red;
+
+    // take the whole screen
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 2px);
+    height: calc(100vh - 2px);
+    background-color: white;
+    z-index: 10; // go on top of nav
+
+    // center
+    display: grid;
+    place-items: center;
+    // grid-template-rows: 1fr 20vh;
+
+    // text
+    font-weight: 700;
+    font-size: 4em;
+
+    & > div > div { display: inline-block; margin-inline: 1rem; }
+}
+
+

@@ -13,10 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block meta %} {% endblock %}
 
-    <link rel="stylesheet" href="/base.css">
-    {% if page.extra.tree or section.extra.tree or config.extra.tree %}
-        <link rel="stylesheet" href="/components/tree.css">
-    {% endif %}
     <link rel="icon" href="{{ config.extra.favicon_url }}">
 
     <!-- Inline Section CSS -->
@@ -27,6 +23,12 @@
     {% block page_inline_css %} {% endblock %}
     <!-- Inline Local CSS -->
     {% block inline_css %} {% endblock %}
+
+    <link rel="stylesheet" href="/base.css">
+    {% if page.extra.tree or section.extra.tree or config.extra.tree %}
+        <link rel="stylesheet" href="/components/tree.css">
+    {% endif %}
+
     <title>
         {% block title %}
             {% if page.title %}
@@ -38,11 +40,13 @@
         {% endblock title %}
         mitiko.x
     </title>
+
     {% if page.extra.katex or section.extra.katex or config.extra.katex %}
         {% include 'katex.html' %}
     {% endif %}
 </head>
 <body>
+    {% block before_content %} {% endblock %}
     <main>
         {% block content %} {% endblock %}
     </main>
