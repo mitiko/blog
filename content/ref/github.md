@@ -1,6 +1,7 @@
 +++
 title = "GitHub & GitHub Actions reference"
 date = 2023-12-06
+aliases = ["/ref/gh"]
 +++
 
 ## Rerun  workflows

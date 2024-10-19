@@ -1,6 +1,7 @@
 +++
 title = "Cloudflare"
 date = 2024-10-19
+aliases = ["/ref/cf"]
 +++
 
 ### Storing Terraform state in an R2 bucket
