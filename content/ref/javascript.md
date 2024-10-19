@@ -1,7 +1,6 @@
 +++
 title = "Javascript"
 date = 2024-10-18
-extra.exclude_meta = true
 +++
 
 ### Generate UUID

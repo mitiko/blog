@@ -1,7 +1,6 @@
 +++
 title = "GitHub & GitHub Actions reference"
 date = 2023-12-06
-extra.exclude_meta = true
 +++
 
 ## Rerun  workflows

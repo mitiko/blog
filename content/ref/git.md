@@ -1,7 +1,6 @@
 +++
 title = "Git reference"
 date = 2024-01-27
-extra.exclude_meta = true
 +++
 
 ## Remove deleted branches from autocomplete

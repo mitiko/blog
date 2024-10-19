@@ -1,7 +1,6 @@
 +++
 title = "Azure Cloud Adaption Framework"
 date = 2023-11-27
-extra.exclude_meta = true
 +++
 
 Reference for Azure CAF, useful when refactoring.

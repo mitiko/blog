@@ -1,7 +1,6 @@
 +++
 title = "Python"
 date = 2024-02-02
-extra.exclude_meta = true
 +++
 
 <!-- tricks -->
