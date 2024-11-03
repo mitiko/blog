@@ -1,3 +1,8 @@
++++
+title = "WIP on mitiko.climbs"
+date = 2024-10-30
++++
+
 WIP for mitiko.oats
 - [ ] branding
   - [ ] tshirts & hoodies
