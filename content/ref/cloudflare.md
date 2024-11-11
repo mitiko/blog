@@ -104,3 +104,23 @@ resource "cloudflare_record" "main" {
   content = cloudflare_pages_project.main.subdomain
 }
 ```
+
+Import (as of 4.44.0):
+
+```
+import {
+  to = cloudflare_pages_project.main
+  id = "{account_id}/{project_name}"
+}
+
+import {
+  to = cloudflare_pages_domain.main
+  id = "{account_id}/{project_name}/{domain_name}"
+}
+
+import {
+  to = cloudflare_record.main
+  id = "{zone_id}/{record_id}"
+}
+# curl -X GET https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records -H "X-Auth-Email: {email}" -H "Authorization: Bearer {api_token}"
+```
