@@ -2,7 +2,7 @@ base_url = "/"
 default_language = "bg"
 
 minify_html = true
-generate_feed = true
+generate_feeds = true
 compile_sass = true
 
 taxonomies = [
@@ -14,7 +14,7 @@ taxonomies = [
 ]
 
 [languages.en]
-generate_feed = true
+generate_feeds = true
 
 [markdown]
 highlight_code = true
