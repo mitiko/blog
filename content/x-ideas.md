@@ -8,6 +8,7 @@ date = 2024-11-07
 3. move REFERENCE.md to /ref/blog or /ref/md and /ref/latex
 4. breadcrumbs for pages on blog
 5. code styling & other themes?
+6. D1 for bank-reports?
 
 <!-- https://github.com/not-an-aardvark/lucky-commit/tree/00000002877d35de410890b322e3f76790706390?tab=readme-ov-file#why -->
 
@@ -34,6 +35,8 @@ Example: `https://mitiko.xyz/p/000` (15-bit permalink = 32'768 articles, 24 byte
 ```
 // instead of meta redirect pages by zola, I could use a CF function
 // it will execute redirect using KV
+
+// 308 redirect /ref/py to /ref/python (aka manage a list of redirects & keep the rest in KV)
 
 // or kv.mitiko.xyz/someKey -> returns someValue
 // this way we can return html meta redirect pages? or 307/308 responses?
