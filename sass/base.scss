@@ -50,9 +50,4 @@ blockquote {
     & > p { color: var(--t2); }
 }
 
-table td, table th {
-    border: 1px solid #000;
-    padding: 0.4rem;
-}
-
-@import 'components/_nav', 'components/_images', 'components/_code_blocks', 'components/_details', 'components/_mods';
+@import 'components/_nav', 'components/_images', 'components/_code_blocks', 'components/_details', 'components/table.scss', 'components/_mods';
