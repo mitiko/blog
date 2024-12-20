@@ -38,5 +38,6 @@ WIP for climbing videos & online presence:
     - [ ] Achko
     - [ ] what are the highballs in Bleau
 - [ ] edit music myself
+  - [ ] cultural BG DnB mixes
 - [ ] better script & ideas management (media.mitiko.xyz should have a text page as well)
-
+- [ ] UPSURT
