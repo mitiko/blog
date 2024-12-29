@@ -124,3 +124,9 @@ import {
 }
 # curl -X GET https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records -H "X-Auth-Email: {email}" -H "Authorization: Bearer {api_token}"
 ```
+
+### Uploading to R2 bucket
+
+```bash
+wrangler r2 object put bucket/path/filename --file=a.jpeg
+```
