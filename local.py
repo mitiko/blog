@@ -14,4 +14,4 @@ if not os.path.exists('/tmp/blog'):
     os.mkdir('/tmp/blog')
 open('/tmp/blog/config.toml', 'w').write(toml.dumps(config))
 
-os.system('zola --config /tmp/blog/config.toml serve --drafts -i 0.0.0.0')
+os.system('zola --config /tmp/blog/config.toml serve --drafts -i 127.0.0.1')
