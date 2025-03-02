@@ -5,6 +5,8 @@ minify_html = true
 generate_feeds = true
 compile_sass = true
 
+slugify.paths_keep_dates = true
+
 taxonomies = [
     { name = "type", feed = true},
     { name = "artist", feed = true},
