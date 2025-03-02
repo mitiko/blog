@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block section_inline_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+header { font-family: 'Courier Prime', monospace; margin-bottom: 0;; }
+header > h1 { font-size: 2em; }
+
+</style>
+{% endblock section_inline_css %}
+
+{% block content %}
+
+<header>{{ section.content | safe }}</header>
+
+<nav>
+  <ul>
+  {% for page in section.pages | slice(end=3) %}
+    <li>
+      <a href="{{ page.path | safe }}"><span class="color2">{{ page.date }}</span> / {{ page.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>
+
+{% endblock content %}
