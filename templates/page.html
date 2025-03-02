@@ -18,7 +18,10 @@
     <h2 id="subtitle">{{ page.extra.subtitle }}</h2>
   {% endif %}
 
-  <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
+  {% set exclude_date = page.extra.exclude_date or parent_section.extra.exclude_date %}
+  {% if not exclude_date %}
+    <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
+  {% endif %}
 
   {% set exclude_meta = page.extra.exclude_meta or parent_section.extra.exclude_meta %}
   {% if not exclude_meta %}
