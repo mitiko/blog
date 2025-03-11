@@ -39,11 +39,22 @@ h3#bethe1 { font-size: 10vw; word-wrap: break; text-align: right; }
 h3#bethe1 > span.w1 { color: #776472 }
 h3#bethe1 > span.w2 { color: #4C4B63 }
 /* h3#bethe1 > a { text-decoration: none; } */
-img { border-radius: 0 !important; }
-iframe#jaguar { border: 3px solid black; border-radius: 4px; }
+img { border-radius: 0 !important; margin: 0 !important; }
+iframe#jaguar { border: 3px solid black; border-radius: 4px; width: calc(100% - 6px) !important; }
 
-section.hate-city-pics, #hate-city-climb { overflow-x: scroll; }
-section.hate-city-pics > div { display: grid; grid-template-columns: repeat(3, 1fr); width: 300%; }
+section.hate-city-pics > div {
+    width: 250%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+section.hate-city-pics {
+    overflow-x: scroll;
+    position: relative;
+    width: min(170%, calc(100vw - 2rem));
+    left: 50%;
+    transform: translateX(-50%);
+    margin-block: 4rem;
+}
 
 section#outro { font-family: "Bruno Ace SC", sans-serif; }
 section#outro > p:nth-child(1) { text-align: right; }
