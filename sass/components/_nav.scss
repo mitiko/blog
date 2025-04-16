@@ -1,14 +1,13 @@
 nav {
-    font-size: 1.2em;
-
     & a {
         color: var(--t1);
-        text-decoration: underline transparent;
+        text-decoration-line: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 0.2rem;
         transition: text-decoration-color 0.3s;
     }
 
     & a:hover {
         text-decoration-color: var(--c1);
-        text-underline-offset: 0.2rem;
     }
 }

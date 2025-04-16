@@ -1,0 +1,6 @@
+# secrets
+main.tfbackend
+secrets.auto.tfvars
+
+# terraform
+.terraform

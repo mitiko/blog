@@ -1,0 +1,105 @@
+// @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Tangerine:wght@400;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Leckerli+One&family=Tangerine:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Galada&family=Leckerli+One&family=Tangerine:wght@400;700&display=swap');
+
+
+html, body { margin: 0; padding: 0; }
+
+body {
+    color: white;
+    & > section { min-height: 100vh; padding: 1rem; }
+    & > section:nth-child(3n+1) { background-color: #ff4d4d; }
+    & > section:nth-child(3n+2) { background-color: #ff6666; }
+    & > section:nth-child(3n+3) { background-color: #ff8080; }
+}
+
+section#landing {
+    display: grid;
+    place-items: center;
+    place-content: center;
+
+    & > h1 {
+        font-family: "Tangerine", serif;
+        font-weight: 700;
+        color: white;
+        font-size: 350%;
+    }
+}
+
+section#details {
+    padding: 3rem;
+
+    font-family: "Emilys Candy", cursive;
+    section { font-size: 150%; }
+
+    & > h2 {
+        font-size: 200%;
+        margin-bottom: 8rem;
+        & > span.name { font-size: 210%; }
+    }
+
+    div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    ul {
+        list-style-image: url("/valentine/white_heart_s.png");
+    }
+}
+
+section#why {
+    overflow-x: hidden;
+
+    div#hearts {
+        display: grid;
+        grid-template-columns: repeat(3, 200px);
+        justify-content: center;
+    }
+    & > h2 {
+        font-family: "Leckerli One", serif;
+        font-weight: 400;
+        text-align: center;
+        font-size: 270%;
+    }
+    & > p {
+        font-family: "Galada", serif;
+    }
+
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+section#playlist {
+    min-height: 50vh;
+    display: grid;
+    place-items: center;
+    place-content: center;
+
+    h2 {
+        margin-bottom: 3rem;
+        font-size: 250%;
+    }
+}
+section#cat {
+    display: grid;
+    place-items: center;
+    place-content: center;
+
+    h2 {
+        font-family: "Emilys Candy", cursive;
+        font-size: 250%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    section#details > div {
+        grid-template-columns: 1fr;
+    }
+}
+
+

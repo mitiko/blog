@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header>
+  <h1 id="title">
+    {{ section.title }}
+  </h1>
+</header>
+
+{% if section.pages | length == 0 %}
+<h2 class="error">No music, yet.</h2>
+{% endif %}
+
+{# TODO: total playlist time #}
+{# TODO: macroblank & other vaporwave, no lyrics #}
+{{ section.content | safe }}
+
+{# is this check really necessary #}
+{% if section.pages | length > 0 %}
+{% set pages = section.pages %}
+
+{% if section.extra.sort_rev %}
+  {% set pages = pages | reverse %}
+{% endif %}
+<nav>
+  <ul>
+  {% for page in pages %}
+    <li>
+      <a href="{{ page.path | safe }}">
+        {{ page.taxonomies.artist | first }}
+        {% if page.taxonomies.artist | length >= 2 %}& {{ page.taxonomies.artist[1] }}{% endif %}
+        {% if page.extra.featuring %}<span class="featuring">ft {{ page.extra.featuring }}</span>{% endif %}
+        - {{ macros::highlight_first_word(string=page.title) }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock content %}

@@ -1,17 +1,22 @@
 base_url = "/"
-
-build_search_index = true
+default_language = "bg"
 
 minify_html = true
-generate_feed = true
+generate_feeds = true
 compile_sass = true
+
+slugify.paths_keep_dates = true
 
 taxonomies = [
     { name = "type", feed = true},
     { name = "artist", feed = true},
+    { name = "album", feed = true},
     { name = "director", feed = true},
     { name = "release-year", feed = true},
 ]
+
+[languages.en]
+generate_feeds = true
 
 [markdown]
 highlight_code = true

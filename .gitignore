@@ -1,7 +1,12 @@
+# zola
 public/
+
+# local work, check x-ideas for more
 TODO
+
+# MacOS
 .DS_Store
 .venv
 
-# Temporary
+# temporary (like... figuring out image optimization and stuff..)
 *.jpg

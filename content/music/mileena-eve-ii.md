@@ -1,5 +1,5 @@
 +++
-title = "Mileena - Eve II"
+title = "Eve II"
 date = 2024-01-30
 
 [taxonomies]
