@@ -3,8 +3,6 @@ sort_by = "date"
 template = "sections/weekly.html"
 
 [extra]
-exclude_meta = true
-exclude_date = true
 tree = true
 +++
 

@@ -11,20 +11,20 @@
 {% block content %}
 <header>
   <h1 id="title">
-    {{ page.title }}
+    {{ page.title | safe }}
   </h1>
 
   {% if page.extra.subtitle %}
     <h2 id="subtitle">{{ page.extra.subtitle }}</h2>
   {% endif %}
 
-  {% set exclude_date = page.extra.exclude_date or parent_section.extra.exclude_date %}
-  {% if not exclude_date %}
+  {% set include_date = page.extra.include_date or parent_section.extra.include_date %}
+  {% if include_date %}
     <p id="date">{{ page.date | date(format="%b %d, %Y") }}</p>
   {% endif %}
 
-  {% set exclude_meta = page.extra.exclude_meta or parent_section.extra.exclude_meta %}
-  {% if not exclude_meta %}
+  {% set include_meta = page.extra.include_meta or parent_section.extra.include_meta %}
+  {% if include_meta %}
     <p>
       <span id="read-time">read-time: <span class="value">{{ page.reading_time }} mins</span></span> |
       <span id="word-count">word-count: <span class="value">{{ page.word_count }}</span></span>
