@@ -17,3 +17,20 @@ function generateUUID() {
     });
 }
 ```
+
+### Uncheck radio buttons
+
+This is also pretty tricky with the `setTimeout`. Everyone on the web suggests
+adding a "no choice" option but tbh I find this more intuitive.
+TODO: test on mobile
+
+```js
+let $ = (selector) => document.querySelector(selector);
+
+document.addEventListener("mouseup", (event) => {
+    let node = event.target;
+    if (node.tagName.toLowerCase() == "label") node = $("#" + node.attributes["for"].value);
+    if (node.tagName.toLowerCase() != "input" || node.type != "radio") return;
+    if (node.checked == true) setTimeout(() => { node.checked = false; }, 0);
+});
+```
