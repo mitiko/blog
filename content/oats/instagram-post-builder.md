@@ -21,7 +21,11 @@ fieldset > p {
 }
 </style>
 
-<form onsubmit="event.preventDefault(); handleSubmit();">
+<form onsubmit="event.preventDefault(); handleSubmit(event);">
+    <p>
+        <label for="summary">Summary:</label>
+        <input type="text" id="summary" />
+    </p>
     <fieldset id="base">
         <legend>Base</legend>
         <p>
@@ -76,13 +80,30 @@ fieldset > p {
             <label for="cocoa-nibs">Cocoa Nibs</label>
         </p>
     </fieldset>
+    <fieldset id="hashtags">
+        <legend>Hashtags</legend>
+        <!-- TODO: CSS Grid of checkboxes -->
+        <p>
+            <input type="checkbox" id="hashtag-1" />
+            <label for="hashtag-1">#oatlicious</label>
+        </p>
+        <p>
+            <input type="checkbox" id="hashtag-2" />
+            <label for="hashtag-2">#oatsforbreakfast</label>
+        </p>
+        <p>
+            <input type="checkbox" id="hashtag-3" />
+            <label for="hashtag-3">#breakfastoats</label>
+        </p>
+        <!-- TODO: add new checkbox entry & save it to local storage? -->
+    </fieldset>
     <br>
     <input type="submit">
 </form>
 
 ### Output:
 
-<pre>
+<pre id="output-box">
 🥣 80g oats & 300g yoghurt
 🍌 1/2 banana
 🍏 1/2 apple
@@ -102,8 +123,33 @@ document.addEventListener("mouseup", (event) => {
     if (node.checked == true) setTimeout(() => { node.checked = false; }, 0);
 });
 
-let handleSubmit = () => {
-    alert("cool");
+// maps input id to emoji
+let inputMap = {
+    "banana": "🍌",
+    "apple": "🍏",
+    "blueberry": "🫐",
+    "chia": "🌰",
+};
+
+// maps quantity value to symbol
+let quantityMap = {
+    "half": "1/2",
+    "three-quarters": "3/4",
+    "spoonful": "spoonful",
+}
+
+let handleSubmit = (event) => {
+    window.s_event = event;
+    console.log(event);
+    let result = "";
+    Array.from(event.target.querySelectorAll("input")).forEach(input => {
+        if ((input.type == "radio" || input.type == "checkbox") && input.checked == true) {
+            let symbol = inputMap[input.id];
+            result += `${symbol} ${input.id}\n`;
+        }
+    });
+
+    $("pre#output-box").innerText = result;
 };
 </script>
 
