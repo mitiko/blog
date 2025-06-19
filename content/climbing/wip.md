@@ -1,6 +1,7 @@
 +++
 title = "WIP on mitiko.climbs"
 date = 2024-10-30
+draft = true
 +++
 
 WIP for climbing videos & online presence:

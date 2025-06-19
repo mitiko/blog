@@ -51,6 +51,9 @@
 <nav>
   <ul>
   {% for page in pages %}
+  {% if page.draft %}
+    {% continue %}
+  {% endif %}
     <li>
       <a href="{{ page.path | safe }}">
         {{ macros::highlight_last_word(string=page.title) }}
