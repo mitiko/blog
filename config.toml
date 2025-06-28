@@ -20,7 +20,8 @@ generate_feeds = true
 
 [markdown]
 highlight_code = true
-highlight_theme = "ayu-light"
+extra_syntaxes_and_themes = ["themes"]
+highlight_theme = "ayu-light-bordered"
 
 [extra]
 favicon_url = "/favicon.png"

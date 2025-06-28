@@ -24,3 +24,13 @@ Not so common commands I often forget.
 [1]: https://example.com "Title"
 ![images](/imgs/a.jpg "Descripton shows when hovered")
 ```
+
+## Converting vscode theme (monaco) to textmate
+
+I need to convert to textmate to be used by Zola.
+
+```bash
+cd themes
+cp ~/.vscode/extensions/github.github-vscode-theme-6.3.5/themes/light-default.json github-light-default.json
+./convert-to-tmtheme.py github-light-default.json
+```
