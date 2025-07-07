@@ -1,9 +1,3 @@
 +++
-title = "Катерене"
-sort_by = "date"
-
-[extra]
-lang = "bg"
+title = "mitiko.climbs"
 +++
-
-Катеренето е страст.

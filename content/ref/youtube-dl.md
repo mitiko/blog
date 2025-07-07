@@ -1,7 +1,7 @@
 +++
 title = "youtube-dl"
 date = 2024-05-03
-extra.exclude_meta = true
+aliases = ["/ref/yt"]
 +++
 
 ```

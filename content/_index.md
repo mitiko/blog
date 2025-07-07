@@ -1,17 +1,12 @@
 +++
 title = "mitiko"
-extra.tree = true
 +++
 
-Hi, this is my corner of the internet (major WIP).
+Hi, this is my corner of the internet.
+You can browse some [music](@/music/_index.md) I like.
 
-For now you can browse some [music](@/music/_index.md) I like.
+Gradually adding some climbing content [here](@/climbing/_index.md).
 
-My insta pages:
+<img src="https://m.mitiko.xyz/2025-bozhenitsa.jpg">
 
-<nav>
-
-- [mitiko.x](https://instagram.com/mitiko.x)
-- [mitiko.climbs](https://instagram.com/mitiko.climbs)
-- [mitiko.oats](https://instagram.com/mitiko.oats)
-</nav>
+Follow me on instagram [@mitiko.oats](https://instagram.com/mitiko.oats)

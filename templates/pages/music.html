@@ -4,6 +4,12 @@
   {{ macros::inline_css(path="/music.css") }}
 {% endblock subsection_inline_css %}
 
+{% block meta %}
+  {% if page.extra.dedicated_to %}
+    <meta name="dedicated_to" content="{{ page.extra.dedicated_to }}">
+  {% endif %}
+{% endblock meta %}
+
 {% block content %}
 <header>
   <h1 id="title">{{ page.title }}</h1>

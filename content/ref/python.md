@@ -1,8 +1,23 @@
 +++
 title = "Python"
 date = 2024-02-02
-extra.exclude_meta = true
+aliases = ["/ref/py"]
 +++
+
+### Scripting (shebang + [uv](https://docs.astral.sh/uv/))
+
+Install uv:
+- using cargo: `cargo install --git https://github.com/astral-sh/uv uv`
+- using brew: `brew install uv`
+- using shell: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- windows: `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+
+```bash
+#!/usr/bin/env uv run --no-project --with toml
+```
+
+You may add as many `--with` as you'd like and specify the version as with requirements.txt.  
+Update uv using `uv self update`.
 
 <!-- tricks -->
 

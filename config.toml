@@ -1,11 +1,11 @@
 base_url = "/"
 default_language = "bg"
 
-build_search_index = true
-
 minify_html = true
-generate_feed = true
+generate_feeds = true
 compile_sass = true
+
+slugify.paths_keep_dates = true
 
 taxonomies = [
     { name = "type", feed = true},
@@ -16,11 +16,12 @@ taxonomies = [
 ]
 
 [languages.en]
-generate_feed = true
+generate_feeds = true
 
 [markdown]
 highlight_code = true
-highlight_theme = "ayu-light"
+extra_syntaxes_and_themes = ["themes"]
+highlight_theme = "ayu-light-bordered"
 
 [extra]
 favicon_url = "/favicon.png"
