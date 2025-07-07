@@ -72,3 +72,54 @@ div.chart:nth-child(4) > div.bar:nth-child(3) { width: 8%; }
     <div class="bar"></div>
 </div>
 </section>
+
+<br><br><br>
+
+<script src="../range-slider.js"></script>
+
+<div id="slider"></div>
+
+<script>
+let gradeIndexToDifficulty = (gradeIndex) => {
+    switch (gradeIndex) {
+        case 6: return "4a";
+        case 7: return "4b";
+        case 8: return "4c";
+        case 9: case "10":
+        case 11: return "5a";
+        case 12:
+        case 13: return "5b";
+        case 14:
+        case 15: return "5c";
+        case 16: return "6a";
+        case 17: return "6a+";
+        case 18: return "6b";
+        case 19: return "6b+";
+        case 20:
+        case 21: return "6c";
+        case 22: return "6c+";
+        case 23: return "7a";
+        case 24: return "7a+";
+        case 25: return "7b";
+        case 26: return "7b+";
+        case 27: return "7c";
+        case 28: return "7c+";
+        case 29: return "8a";
+        case 30: return "8a+";
+        case 31: return "8b";
+    }
+    return gradeIndex;
+};
+let sliderOptions = {
+    pointRadius: 10,
+    values: [10, 20, 26],
+    min: 6,
+    max: 31,
+    tooltipHandler: gradeIndexToDifficulty,
+};
+let slider = new RangeSlider('div#slider', sliderOptions);
+slider.onChange(values => {
+    values.sort();
+    console.log(values);
+});
+</script>
