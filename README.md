@@ -6,3 +6,7 @@ I like SSGs and I love the simplicity of zola. I am keen to keep the design as c
 
 Hosted on **Cloudflare Pages**  
 Built with **Zola**
+
+```bash
+source ~/_blog/.venv/bin/activate
+```

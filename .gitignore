@@ -6,6 +6,7 @@ TODO
 
 # MacOS
 .DS_Store
+.venv
 
 # temporary (like... figuring out image optimization and stuff..)
 *.jpg
