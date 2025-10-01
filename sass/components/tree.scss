@@ -1,24 +1,17 @@
-nav { // undo default ul styles
-    margin-block: 1rem;
-
-    & ul {
-        list-style-type: none;
-        padding-inline: 0;
-        margin-block: 0;
-    }
-
-    & > p:first-child { margin-block: 0; }
-}
-
 $x: 1.2rem; // size of boxes
 $y: 0.3rem; // offset to text
 $a: 0.2rem; // border width
 $t: $x + $y + $a; // total offset of text
-
-// $color: var(--c1);
 $color: silver;
 
-nav ul > li::before {
+// undo default ul styles
+ul.tree {
+    list-style-type: none;
+    padding-inline: 0;
+    margin-block: 0;
+}
+
+ul.tree > li::before {
     // draw the curvy bulletpoints
     content: '';
     display: inline-block;
@@ -37,7 +30,7 @@ nav ul > li::before {
 // and since the size of the box + the width of the border + the text offset is
 // the full offset of the text from the parent container, it's pretty
 $t: $x + $y + $a;
-nav ul > li {
+ul.tree > li {
     margin-left: $t;
     &::before {
         margin-left: -$t;
@@ -46,11 +39,13 @@ nav ul > li {
 
 // for height: 100% to work, the containers need to be position: absolute;
 // so, their parents must be position: relative;
-nav, ul, li:last-child {
+ul.tree,
+ul.tree > li:last-child {
     position: relative;
 }
 
-nav ul::before { // main "border"
+// main "border"
+ul.tree::before {
     // using a border (instead of ::before) doesn't work because of a mismatch
     // in how pixels are rounded when refering to an element vs a pseudo element
     content: '';
@@ -62,7 +57,8 @@ nav ul::before { // main "border"
     // is in a calc, it refers to its own width, rather than the parent's height
 }
 
-nav ul > li:last-child::after { // clearfix overextended (tail) border
+// clearfix overextended (tail) border
+ul.tree > li:last-child::after {
     content: '';
     display: inline-block;
 
