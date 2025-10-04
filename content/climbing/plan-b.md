@@ -331,8 +331,8 @@ section.gallery.vertical img { max-width: 50ch; }
 Край. Стига толкова.
 
 <figure>
-  <video width="100%" controls alt="Dinner in Rila">
-    <source src="https://m.mitiko.xyz/climbing/2025-rila-plan-b/dinner.mp4" type="video/mp4">
+  <video width="100%" controls alt="Dinner in Rila" preload="metadata">
+    <source src="https://m.mitiko.xyz/climbing/2025-rila-plan-b/dinner.mp4#t=0.1" type="video/mp4">
   </video>
   <figcaption>Компромисна дехидратирана вечеря от Декатлон</figcaption>
 </figure>
