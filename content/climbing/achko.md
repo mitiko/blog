@@ -40,6 +40,13 @@ extra.subtitle = "Страх и Свобода"
 си почивате на хамака и да гледате как някой друг се мъчи!</span>  
 Лицето му бе изписано с един покой, който можеш да достигнеш само ако си се изправил **очи в очи със звяра**.
 
+<figure>
+  <video width="100%" controls alt="Toni D sleeping under the boulder" preload="metadata">
+    <source src="https://m.mitiko.xyz/climbing/2024-rila-achko/toni-spi-pod-achko.mp4#t=16" type="video/mp4">
+  </video>
+  <figcaption>Тони Диков спи в хамак под Ачко (03.09.2023)</figcaption>
+</figure>
+
 [toni-d]: <https://toni9i.blogspot.com>
 
 Матей, като слезе беше видимо развълнуван, малко потресен, и усезаемо уплашен.
