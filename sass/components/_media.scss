@@ -1,1 +1,11 @@
 audio { width: 100%; }
+
+img, svg {
+    display: block;
+    max-width: 100%;
+    margin-inline: auto; // center
+}
+
+// no border readius for svgs
+img, video { border-radius: 6px; }
+svg, img[src$=".svg"] { border: none; }
