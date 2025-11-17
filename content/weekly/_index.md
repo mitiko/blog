@@ -14,3 +14,4 @@ tree = true
 
 **CAUTION**: your attention is required for fine art
 
+<!-- TODO: rename from weekly to something else -->
