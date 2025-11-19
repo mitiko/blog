@@ -9,3 +9,9 @@ date = 2024-01-27
 git fetch --prune --all
 ```
 source: <https://stackoverflow.com/questions/17933401/how-do-i-remove-deleted-branch-names-from-autocomplete>
+
+## Global gitignore
+
+```bash
+echo '.DS_Store' >> ~/.gitignore
+```
